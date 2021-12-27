@@ -1,0 +1,2 @@
+dental-app-frontend:
+  component: "@sls-next/serverless-component@latest"
