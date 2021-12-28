@@ -1,6 +1,19 @@
+import { useContext } from 'react';
+import { AppContext } from '../../../context/app.context';
+
 interface PremiumInfoProps {}
 
+const getCurrency = (price: number) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'GBP',
+  }).format(price);
+};
+
 export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
+  const { state } = useContext(AppContext);
+  const { features, price, setting_code, terms } =
+    state.userState.premiumInformation;
   return (
     <>
       <div className='profile-box-form'>
@@ -18,56 +31,20 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
               <p className='form-profile-label'>
                 <label className='form-profile-label'>Premium Features</label>
               </p>
-              <p>
-                <input
-                  className='form-profile-input'
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='Verification Checkmark'
-                />
-              </p>
-              <p>
-                <input
-                  className='form-profile-input'
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='Feature 2'
-                />
-              </p>
-              <p>
-                <input
-                  className='form-profile-input'
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='Feature 3'
-                />
-              </p>
-              <p>
-                <input
-                  className='form-profile-input'
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='Feature 4'
-                />
-              </p>
-              <p>
-                <input
-                  className='form-profile-input'
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='Feature 5'
-                />
-              </p>
+
+              {features.map((item) => (
+                <p>
+                  <input
+                    className='form-profile-input'
+                    type='text'
+                    name=''
+                    id=''
+                    value={item}
+                    placeholder='Feature 2'
+                  />
+                </p>
+              ))}
+
               <p className='add-plus'>
                 <input
                   className='form-profile-input '
@@ -89,16 +66,17 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
           <div className='profile-block-box'>
             <div>
               <p className='form-profile-label'>
-                <label className='form-profile-label'>Price</label>
+                <label className='form-profile-label'>
+                  Price ({getCurrency(0)})
+                </label>
               </p>
               <p>
                 <input
                   className='form-profile-input'
                   type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder='xx'
+                  name='pricePremiumInfo'
+                  id='pricePremiumInfo'
+                  value={price / 100}
                 />
               </p>
             </div>
@@ -114,7 +92,7 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   type='text'
                   name=''
                   id=''
-                  value=''
+                  value={terms}
                   placeholder='Web Link'
                 />
               </p>

@@ -470,6 +470,7 @@ label {
 @import '../components/Person/Person.module.css';
 @import '../components/Account/account.module.css';
 @import '../components/common/Switch/style.css';
+@import '../components/Settings/style.css';
 
 
 

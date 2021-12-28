@@ -1,7 +1,12 @@
-import { useContext, useState } from 'react';
+import axios from 'axios';
+import { useCallback, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { API } from '../../../api/AWS-gateway';
 import { AppContext } from '../../../context/app.context';
 import { Switch } from '../../common/Switch';
+import { ISetNotofication } from '../../Toast';
+import notify from '../../Toast';
+import { SubSettings, UserTypes } from '../../../reducers';
 
 interface PaidSubscriberProps {}
 
@@ -15,7 +20,7 @@ interface IPaidSubscriberChilds {
 const activeColor = '#095C5C';
 
 export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const {
     freeHasPhoneNumber,
     freeHasWebsite,
@@ -39,11 +44,19 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
     paidIsVerified,
   });
 
+  const setNotification = useCallback<ISetNotofication>(
+    ({ ...notifyProps }) => {
+      notify({ ...notifyProps });
+    },
+    []
+  );
+
   const onChangeValues = (name: string, value: boolean) => {
-    let newOpts = { ...opts };
-    newOpts[name] = value;
-    console.log(newOpts);
-    setOptions(newOpts);
+    console.log(name, value);
+    setOptions({
+      ...opts,
+      [name]: value,
+    });
   };
 
   const {
@@ -55,9 +68,50 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
     setValue,
   } = useForm<IPaidSubscriberChilds>();
 
+  const onSubmit = async (data: IPaidSubscriberChilds) => {
+    const body = {
+      setting_code: 'sys_settings',
+      free: {
+        maxLocations: data.freeMaxLocations,
+        maxServices: data.freeMaxServices,
+        hasWebsite: opts.freeHasWebsite,
+        hasPhoneNumber: opts.freeHasPhoneNumber,
+        isVerified: opts.freeIsVerified,
+      },
+      paid: {
+        maxLocations: data.paidMaxLocations,
+        maxServices: data.paidMaxServices,
+        hasWebsite: opts.paidHasWebsite,
+        hasPhoneNumber: opts.paidHasPhoneNumber,
+        isVerified: opts.paidIsVerified,
+      },
+    };
+
+    try {
+      const { data } = await axios.post<SubSettings>(API.SETTINGS_CHANGE, body);
+      dispatch({
+        type: UserTypes.SET_SUBSCRIBER_SETTINGS,
+        payload: { ...data },
+      });
+      setNotification({
+        type: 'success',
+        message: 'Successfully changed settings',
+        autoClose: 3,
+        position: 'top-right',
+      });
+    } catch (exp) {
+      setNotification({
+        type: 'error',
+        message: 'Failed to change settings',
+        autoClose: 3,
+      });
+      console.log(exp);
+    }
+  };
+
   return (
     <>
-      <div className='profile-box-form'>
+      <form className='profile-box-form' onSubmit={handleSubmit(onSubmit)}>
         <div className='form-info-block-paid'>
           <div>
             <p className='form-login-title green px20'>Paid Subscriber</p>
@@ -74,12 +128,21 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                       {...register('paidMaxLocations', {
                         required: { value: true, message: '*Required option' },
                         value: paidMaxLocations,
+                        pattern: /^[0-9]$/,
                       })}
                       type='text'
                       name='paidMaxLocations'
                       id='paidMaxLocations'
                       maxLength={2}
                     />
+                    {(errors.paidMaxLocations?.message ||
+                      errors.paidMaxLocations?.type) && (
+                      <p className='error-text'>
+                        {' '}
+                        {errors.paidMaxLocations?.message ||
+                          'Invalid, max: 9, min: 1'}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <div>
@@ -92,12 +155,21 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                       {...register('paidMaxServices', {
                         required: { value: true, message: '*Required option' },
                         value: paidMaxServices,
+                        pattern: /^[0-9]$/,
                       })}
                       type='text'
                       name='paidMaxServices'
                       id='paidMaxServices'
                       maxLength={2}
                     />
+                    {(errors.paidMaxServices?.message ||
+                      errors.paidMaxServices?.type) && (
+                      <p className='error-text'>
+                        {' '}
+                        {errors.paidMaxServices?.message ||
+                          'Invalid, max: 9, min: 1'}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <div></div>
@@ -106,7 +178,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'> Website Address</label>
                   <Switch
-                    isOn={paidHasWebsite}
+                    key={'paidHasWebsite'}
+                    isOn={opts.paidHasWebsite}
+                    id={'paidHasWebsite'}
                     handleToggle={() =>
                       onChangeValues('paidHasWebsite', !opts.paidHasWebsite)
                     }
@@ -117,7 +191,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'>Phone Number</label>
                   <Switch
-                    isOn={paidHasPhoneNumber}
+                    key={'paidHasPhoneNumber'}
+                    isOn={opts.paidHasPhoneNumber}
+                    id={'paidHasPhoneNumber'}
                     handleToggle={() =>
                       onChangeValues(
                         'paidHasPhoneNumber',
@@ -131,7 +207,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'>Appear Verified</label>
                   <Switch
-                    isOn={paidIsVerified}
+                    key={'paidIsVerified'}
+                    isOn={opts.paidIsVerified}
+                    id={'paidIsVerified'}
                     handleToggle={() =>
                       onChangeValues('paidIsVerified', !opts.paidIsVerified)
                     }
@@ -156,12 +234,20 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                       {...register('freeMaxLocations', {
                         required: { value: true, message: '*Required option' },
                         value: freeMaxLocations,
+                        pattern: /^[0-9]$/,
                       })}
                       type='text'
                       name='freeMaxLocations'
                       id='freeMaxLocations'
                       maxLength={2}
                     />
+                    {(errors.freeMaxLocations?.message ||
+                      errors.freeMaxLocations?.type) && (
+                      <p className='error-text'>
+                        {errors.freeMaxLocations?.message ||
+                          'Invalid, max: 9, min: 1'}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <div>
@@ -174,12 +260,20 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                       {...register('freeMaxServices', {
                         required: { value: true, message: '*Required option' },
                         value: freeMaxServices,
+                        pattern: /^[0-9]$/,
                       })}
                       type='text'
                       name='freeMaxServices'
                       id='freeMaxServices'
                       maxLength={2}
                     />
+                    {(errors.freeMaxServices?.message ||
+                      errors.freeMaxServices?.type) && (
+                      <p className='error-text'>
+                        {errors.freeMaxServices?.message ||
+                          'Invalid, max: 9, min: 1'}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <div></div>
@@ -188,9 +282,11 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'> Website Address</label>
                   <Switch
-                    isOn={freeHasWebsite}
+                    key={'freeHasWebsite'}
+                    isOn={opts.freeHasWebsite}
+                    id={'freeHasWebsite'}
                     handleToggle={() =>
-                      onChangeValues('freeHasWebsite', opts.freeHasWebsite)
+                      onChangeValues('freeHasWebsite', !opts.freeHasWebsite)
                     }
                     onColor={activeColor}
                   />
@@ -199,7 +295,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'>Phone Number</label>
                   <Switch
+                    key={'freeHasPhoneNumber'}
                     isOn={opts.freeHasPhoneNumber}
+                    id={'freeHasPhoneNumber'}
                     handleToggle={() =>
                       onChangeValues(
                         'freeHasPhoneNumber',
@@ -213,7 +311,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
                 <p className='form-profile-label'>
                   <label className='form-profile-label'>Appear Verified</label>
                   <Switch
-                    isOn={freeIsVerified}
+                    key={'freeIsVerified'}
+                    id={'freeIsVerified'}
+                    isOn={opts.freeIsVerified}
                     handleToggle={() =>
                       onChangeValues('freeIsVerified', !opts.freeIsVerified)
                     }
@@ -232,10 +332,12 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
           }}
         >
           <p className='row-content'>
-            <button className='button-green'>Apply</button>
+            <button className='button-green' type='submit'>
+              Apply
+            </button>
           </p>
         </div>
-      </div>
+      </form>
     </>
   );
 };

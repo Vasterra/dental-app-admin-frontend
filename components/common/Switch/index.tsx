@@ -1,32 +1,49 @@
-import React from 'react';
+import React, {
+  DetailedHTMLProps,
+  ForwardedRef,
+  forwardRef,
+  InputHTMLAttributes,
+  useState,
+} from 'react';
 
-interface ISwitchProps {
+interface ISwitchProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   isOn: boolean;
   handleToggle: () => void;
+  key?: string;
   onColor?: string;
 }
 
-export const Switch: React.FC<ISwitchProps> = ({
-  isOn,
-  handleToggle,
-  onColor,
-}) => {
-  return (
-    <>
-      <input
-        checked={isOn}
-        onChange={handleToggle}
-        className='react-switch-checkbox'
-        id={`react-switch-new`}
-        type='checkbox'
-      />
-      <label
-        style={{ background: isOn ? onColor : '' }}
-        className='react-switch-label'
-        htmlFor={`react-switch-new`}
-      >
-        <span className={`react-switch-button`} />
-      </label>
-    </>
-  );
-};
+export const Switch = forwardRef(
+  (
+    { onColor, isOn, handleToggle, className, ...props }: ISwitchProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ): JSX.Element => {
+    // const [value, setValue] = useState(isOn);
+    return (
+      <>
+        <input
+          checked={isOn}
+          onChange={() => {
+            // setValue(!value);
+            handleToggle();
+          }}
+          name={props.name}
+          className='react-switch-checkbox'
+          id={props.id}
+          type='checkbox'
+        />
+        <label
+          style={{ background: isOn ? onColor : '' }}
+          className='react-switch-label'
+          htmlFor={props.id}
+        >
+          <span className={`react-switch-button`} />
+        </label>
+      </>
+    );
+  }
+);
