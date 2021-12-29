@@ -2,15 +2,23 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import { AppContext } from '../../../context/app.context';
 import { useLogout } from '../../../hooks/useLogout';
+import { UserTypes } from '../../../reducers';
 
 const LeftMenu: React.FC = () => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const { isLogged } = state.userState;
   const { avatar_url, username, email } = state.userState.adminDetails;
 
+  const setToggle = (isOpen) => {
+    dispatch({
+      type: UserTypes.OPEN_LEFT_MENU,
+      payload: isOpen,
+    });
+  };
+
   const [logOut] = useLogout(() => {
-    sessionStorage.removeItem('user');
-  }, '/login');
+    setToggle(false);
+  });
 
   return (
     <div>

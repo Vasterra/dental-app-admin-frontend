@@ -1,6 +1,18 @@
+import { useContext } from 'react';
+import { AppContext } from '../../../context/app.context';
+
 interface CurrentMonthProps {}
 
 export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
+  const { state } = useContext(AppContext);
+  const {
+    amountOfClosedAccounts,
+    amountOfClosedSubscriptions,
+    amountOfImages,
+    amountOfNewAccounts,
+    amountOfSubscriptions,
+  } = state.userState.monthlyStats;
+
   return (
     <>
       <div className='profile-box-form'>
@@ -19,10 +31,10 @@ export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
                   <input
                     className='form-profile-input'
                     type='text'
-                    name=''
-                    id=''
-                    value=''
-                    placeholder='82'
+                    name='amountOfSubscriptions'
+                    id='amountOfSubscriptions'
+                    value={amountOfSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -36,10 +48,10 @@ export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
                   <input
                     className='form-profile-input'
                     type='text'
-                    name=''
-                    id=''
-                    value=''
-                    placeholder='2'
+                    name='amountOfNewAccounts'
+                    id='amountOfNewAccounts'
+                    value={amountOfNewAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -47,17 +59,17 @@ export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
               <div>
                 <p className='form-profile-label'>
                   <label className='form-profile-label'>
-                    Subscriptions Closed{' '}
+                    Subscriptions Closed
                   </label>
                 </p>
                 <p>
                   <input
                     className='form-profile-input'
                     type='text'
-                    name=''
-                    id=''
-                    value=''
-                    placeholder='2'
+                    name='amountOfClosedSubscriptions'
+                    id='amountOfClosedSubscriptions'
+                    value={amountOfClosedSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -69,10 +81,10 @@ export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
                   <input
                     className='form-profile-input'
                     type='text'
-                    name=''
-                    id=''
-                    value=''
-                    placeholder='14'
+                    name='amountOfClosedAccounts'
+                    id='amountOfClosedAccounts'
+                    value={amountOfClosedAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -84,10 +96,10 @@ export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
                   <input
                     className='form-profile-input'
                     type='text'
-                    name=''
-                    id=''
-                    value=''
-                    placeholder='382'
+                    name='amountOfImages'
+                    id='amountOfImages'
+                    value={amountOfImages}
+                    onChange={() => {}}
                   />
                 </p>
               </div>

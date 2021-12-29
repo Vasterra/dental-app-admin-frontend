@@ -1,3 +1,5 @@
+import { Chart } from './chart2';
+
 export const TotalSubs: React.FC<any> = () => {
   return (
     <>
@@ -87,8 +89,8 @@ export const TotalSubs: React.FC<any> = () => {
               </div>
             </div>
           </div>
-          <div className='profile-block-box'>
-            <div className='stripes'>
+          <div className='profile-block-box' style={{ padding: '60px' }}>
+            {/* <div className='stripes'>
               <div className='total'>
                 <p>900</p>
                 <p>800</p>
@@ -140,7 +142,8 @@ export const TotalSubs: React.FC<any> = () => {
               <p>October</p>
               <p>November</p>
               <p>December</p>
-            </div>
+            </div> */}
+            <Chart />
           </div>
         </>
       </div>

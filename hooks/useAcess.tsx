@@ -30,7 +30,7 @@ export const useAccess = (params: {
   }, [timeLeft, isLogged]);
 
   useEffect(() => {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('admin');
     if (user) {
       console.log(JSON.parse(user));
       setAuth(true);

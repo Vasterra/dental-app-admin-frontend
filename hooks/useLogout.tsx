@@ -7,13 +7,12 @@ export const useLogout = (callback?: Function, path?: string) => {
   const { dispatch } = useContext(AppContext);
 
   const logOut = async () => {
-    sessionStorage.removeItem('userInfo');
-    localStorage.removeItem('previousState');
+    localStorage.removeItem('admin');
     dispatch({
       type: UserTypes.LOGOUT,
     });
     if (callback) callback();
-    Router.push(path || '/');
+    Router.push(path || '/login');
   };
 
   return [logOut];

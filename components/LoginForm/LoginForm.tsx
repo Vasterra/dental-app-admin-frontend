@@ -69,7 +69,8 @@ export const LoginForm: FC<ILoginForm> = ({ setStep }) => {
         email: formData.login,
         password: formData.password,
       });
-      sessionStorage.setItem('user', JSON.stringify(data));
+
+      localStorage.setItem('admin', JSON.stringify(data));
 
       const fullData = await axios.get<IAdminFullDataResponse>(
         `${API.SETTINGS_FULL_INFO}?email=${data.email}`

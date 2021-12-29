@@ -1,11 +1,58 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { AppContext } from '../../../context/app.context';
+import { ISetNotofication } from '../../Toast';
+import notify from '../../Toast';
+import axios from 'axios';
+import { API } from '../../../api/AWS-gateway';
 
 interface AdminDetailsProps {}
+
+interface ResetPassFormChild {
+  oldPassword: string;
+  newPassword: string;
+}
 
 export const AdminDetails: React.FC<AdminDetailsProps> = () => {
   const { state } = useContext(AppContext);
   const { email, username } = state.userState.adminDetails;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPassFormChild>();
+
+  const setNotification = useCallback<ISetNotofication>(
+    ({ ...notifyProps }) => {
+      notify({ ...notifyProps });
+    },
+    []
+  );
+
+  const handleResetPasword = async (data: ResetPassFormChild) => {
+    const { oldPassword, newPassword } = data;
+    const body = {
+      email,
+      oldPassword,
+      newPassword,
+    };
+    try {
+      await axios.post(API.ACCOUNT_RESET_PASSWORD, body);
+      setNotification({
+        type: 'success',
+        message: 'Successfully changed password!',
+        position: 'top-right',
+        autoClose: 2,
+      });
+    } catch (exp) {
+      setNotification({
+        type: 'warning',
+        message: 'Error to reset password account, please try again!',
+      });
+    }
+  };
+
   return (
     <>
       <div className='profile-box-form'>
@@ -56,7 +103,10 @@ export const AdminDetails: React.FC<AdminDetailsProps> = () => {
               </p>
             </div>
           </div>
-          <div className='profile-block-box'>
+          <form
+            className='profile-block-box'
+            onSubmit={handleSubmit(handleResetPasword)}
+          >
             <div>
               <p className='form-profile-label'>
                 <label className='form-profile-label'>Reset Password</label>
@@ -65,30 +115,53 @@ export const AdminDetails: React.FC<AdminDetailsProps> = () => {
                 <span className='input-span'>Current</span>{' '}
                 <input
                   className='form-profile-input'
+                  {...register('oldPassword', {
+                    required: {
+                      value: true,
+                      message: 'password is required',
+                    },
+                  })}
                   type='text'
-                  name='current'
-                  id='current'
-                  value=''
-                  placeholder='XXXXXXXXXXXXXXX'
+                  name='oldPassword'
+                  id='oldPassword'
+                  placeholder='old password'
                 />
               </p>
+              {(errors.oldPassword?.message || errors.oldPassword?.type) && (
+                <p className='account-error-text'>
+                  {errors.oldPassword?.message || 'Invalid password'}
+                </p>
+              )}
               <p className='row-content'>
                 <span className='input-span'>New</span>{' '}
                 <input
                   className='form-profile-input'
+                  {...register('newPassword', {
+                    required: {
+                      value: true,
+                      message: 'new password is required',
+                    },
+                  })}
                   type='text'
-                  name='new'
-                  id='new'
-                  value=''
-                  placeholder='Xxxxx'
+                  name='newPassword'
+                  id='newPassword'
+                  placeholder='new password'
                 />
               </p>
+              {(errors.newPassword?.message || errors.newPassword?.type) && (
+                <p className='account-error-text'>
+                  {' '}
+                  {errors.newPassword?.message || 'Invalid new password'}
+                </p>
+              )}
             </div>
             <p className='row-content'>
               <span className='input-span'></span>
-              <button className='button-green'>Reset Password</button>
+              <button className='button-green' type='submit'>
+                Reset Password
+              </button>
             </p>
-          </div>
+          </form>
         </div>
       </div>
     </>

@@ -9,12 +9,13 @@ interface ICollapsedSidebarProps {
 }
 
 export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({
-  logout,
   setToggle,
   toggle,
   state,
+  logout,
 }) => {
   const { username, avatar_url, email } = state.adminDetails;
+
   return (
     <div
       id='myNav'
@@ -31,7 +32,7 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({
                 setToggle(false);
               }}
             />
-            <div className='link-actve'>
+            <div className='link-active'>
               <Link href='/'>
                 <img
                   src='../../images/FYD4_beige-on-green@2x.png'
@@ -54,59 +55,44 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({
             </div>
           </div>
           <div className='leftmenu-navbar'>
-            <Link href={`../dentist/profile/`}>
+            <Link href={`/admin/dashboard`}>
               <li className={`leftmenu-list active}`}>
                 <img
                   className='leftmenu-link-image'
                   src='../../images/user.svg'
                   alt='link image'
                 />
-                <a className='leftmenu-link'>Profile</a>
+                <a className='leftmenu-link'>Dashboard</a>
               </li>
             </Link>
-            <Link href={`../../dentist/gallery/`}>
-              <li className={`leftmenu-list`}>
-                <img
-                  className='leftmenu-link-image'
-                  src='../../images/gallery.svg'
-                  alt='link image'
-                />
-                <a className='leftmenu-link'>Gallery</a>
-              </li>
-            </Link>
-            <Link href={`../../dentist/account/`}>
+            <Link href={`/admin/settings`}>
               <li className={`leftmenu-list`}>
                 <img
                   className='leftmenu-link-image'
                   src='../../images/more_vert.svg'
                   alt='link image'
                 />
-                <a className='leftmenu-link'>Account</a>
+                <a className='leftmenu-link'>Settings</a>
               </li>
             </Link>
-            <Link href={`../../search/${email}`}>
+            <Link href={`/admin/user`}>
               <li className={`leftmenu-list`}>
                 <img
                   className='leftmenu-link-image'
                   src='../../images/person_black_24dp.svg'
                   alt='link image'
                 />
-                <a className='leftmenu-link'>View My Profile</a>
+                <a className='leftmenu-link'>Users</a>
               </li>
             </Link>
+
             <li className='leftmenu-list logout'>
               <img
                 className='leftmenu-link-image'
                 src='../../images/left-arrow.svg'
                 alt='link image'
               />
-              <a
-                className='leftmenu-link'
-                href='#'
-                onClick={async () => {
-                  await logout();
-                }}
-              >
+              <a className='leftmenu-link' href='/login' onClick={logout}>
                 Logout
               </a>
             </li>

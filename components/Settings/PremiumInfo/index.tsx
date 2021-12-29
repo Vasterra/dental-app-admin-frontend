@@ -1,5 +1,10 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { AppContext } from '../../../context/app.context';
+import { ISetNotofication } from '../../Toast';
+import notify from '../../Toast';
+import { API } from '../../../api/AWS-gateway';
+import axios from 'axios';
 
 interface PremiumInfoProps {}
 
@@ -10,10 +15,51 @@ const getCurrency = (price: number) => {
   }).format(price);
 };
 
+interface ResetPassFormChild {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
   const { state } = useContext(AppContext);
   const { features, price, setting_code, terms } =
     state.userState.premiumInformation;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPassFormChild>();
+
+  const setNotification = useCallback<ISetNotofication>(
+    ({ ...notifyProps }) => {
+      notify({ ...notifyProps });
+    },
+    []
+  );
+
+  const handleResetPasword = async (data: ResetPassFormChild) => {
+    const { oldPassword, newPassword } = data;
+    const body = {
+      oldPassword,
+      newPassword,
+    };
+    try {
+      await axios.post(API.ACCOUNT_RESET_PASSWORD, body);
+      setNotification({
+        type: 'success',
+        message: 'Successfully changed password!',
+        position: 'top-right',
+        autoClose: 2,
+      });
+    } catch (exp) {
+      setNotification({
+        type: 'warning',
+        message: 'Error to reset password account, please try again!',
+      });
+    }
+  };
+
   return (
     <>
       <div className='profile-box-form'>
