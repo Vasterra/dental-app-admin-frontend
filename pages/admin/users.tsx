@@ -5,6 +5,7 @@ import LeftMenu from '../../components/LeftMenu/OnProfile/leftMenu';
 import { Account } from '../../components/Account';
 import { useCredentials } from '../../hooks/useCredentials';
 import Skeleton from 'react-loading-skeleton';
+import { Users } from '../../components/Users';
 
 const UsersPage: NextPage = (): JSX.Element => {
   const { loading } = useCredentials();
@@ -30,7 +31,7 @@ const UsersPage: NextPage = (): JSX.Element => {
             )}
             {!loading && (
               <>
-                <Account />
+                <Users />
               </>
             )}
           </div>

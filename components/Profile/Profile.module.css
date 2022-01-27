@@ -265,10 +265,17 @@ img {
 	align-self: stretch;
 	flex-direction: column;
 	justify-content: flex-start;
-
 	width: 100%;
 	min-height: 100vh;
 	padding: 10px 20px;
+}
+
+.main-profile_leftMenuOpened {
+	width: calc(100vw - 333px - 15px);
+	display: flex;
+	flex-direction: column;
+	align-self: stretch;
+	margin: 0 0 0 auto;
 }
 
 .main-height-full {
@@ -1046,7 +1053,7 @@ select.arrows {
 }
 
 .profile-box-form {
-	width: 100%;
+	width: calc(100% - 30px);
 	height: auto;
 	margin: 15px;
 	padding: 32px;
@@ -1059,7 +1066,6 @@ select.arrows {
 .profile-block-box {
 	align-self: stretch;
 	flex-basis: 47%;
-
 	margin-top: 20px;
 
 	/* flex-grow:1; */

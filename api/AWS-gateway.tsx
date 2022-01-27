@@ -8,4 +8,6 @@ export const API = {
   CHANGE_SERVICES: `${ADMIN_HOST}/api/admin/settings/services`,
   ACCOUNT_RESET_PASSWORD: `${PROFILE_HOST}/api/dentist/profile/account/resetPassword`,
   STAT_CUR_MONTHS: `${ADMIN_HOST}/api/admin/dashboard`,
+  GET_USERS: `${ADMIN_HOST}/api/admin/users`,
+  SUSPEND_USER: `${ADMIN_HOST}/api/admin/users/suspend`,
 };

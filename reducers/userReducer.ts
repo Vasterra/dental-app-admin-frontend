@@ -37,6 +37,7 @@ export interface MonthStats {
   amountOfClosedSubscriptions: number;
   amountOfImages: number;
 }
+
 export interface SubSettings {
   freeHasPhoneNumber: false;
   freeHasWebsite: false;

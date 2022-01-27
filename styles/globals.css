@@ -1,6 +1,17 @@
 @import '../public/fonts/SFPro/stylesheet.css';
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
 
+@import '../components/LoginForm/LoginForm.module.css';
+@import '../components/Header/Header.module.css';
+@import '../components/Spinner/Spinner.module.css';
+@import '../components/Profile/Profile.module.css';
+@import '../components/LeftMenu/OnHeader/Sidebar.module.css';
+@import '../components/Footer/Footer.module.css';
+@import '../components/Person/Person.module.css';
+@import '../components/Account/account.module.css';
+@import '../components/common/Switch/style.css';
+@import '../components/Settings/style.css';
+
 html,
 body {
 	margin: 0;
@@ -460,20 +471,6 @@ label {
 		width: 0;
 	}
 }
-
-@import '../components/LoginForm/LoginForm.module.css';
-@import '../components/Header/Header.module.css';
-@import '../components/Spinner/Spinner.module.css';
-@import '../components/Profile/Profile.module.css';
-@import '../components/LeftMenu/OnHeader/Sidebar.module.css';
-@import '../components/Footer/Footer.module.css';
-@import '../components/Person/Person.module.css';
-@import '../components/Account/account.module.css';
-@import '../components/common/Switch/style.css';
-@import '../components/Settings/style.css';
-
-
-
 
 /*end of line*/
 @import 'react-loading-skeleton/dist/skeleton.css';

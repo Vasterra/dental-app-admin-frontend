@@ -67,7 +67,7 @@ const LeftMenu: React.FC = () => {
               <a className='leftmenu-link'>Settings</a>
             </li>
           </Link>
-          <Link href={`/admin/user`}>
+          <Link href={`/admin/users`}>
             <li className={`leftmenu-list`}>
               <img
                 className='leftmenu-link-image'
