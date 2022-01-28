@@ -1,6 +1,33 @@
 import { Chart } from './chart2';
+import axios from 'axios';
+import { API } from '../../../api/AWS-gateway';
+import {useEffect, useState} from "react";
 
 export const TotalSubs: React.FC<any> = () => {
+  const [totalStats, setTotalStats] = useState({
+    amountOfClosedAccounts: 0,
+    amountOfClosedSubscriptions: 0,
+    amountOfImages: 0,
+    amountOfNewAccounts: 0,
+    amountOfSubscriptions: 0
+  });
+
+  const getTotalStats = async () => {
+  const body = {
+    year: '2021'
+  };
+  try {
+    const res = await axios.post(`${API.STAT_CUR_MONTHS}`, body);
+    setTotalStats(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+  useEffect(() => {
+    getTotalStats();
+  }, []);
+
   return (
     <>
       <div className='profile-box-form'>
@@ -19,8 +46,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='134'
+                    value={totalStats.amountOfSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -34,8 +61,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='24'
+                    value={totalStats.amountOfNewAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -52,8 +79,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='12'
+                    value={totalStats.amountOfClosedSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -67,8 +94,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='23'
+                    value={totalStats.amountOfClosedAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -82,67 +109,14 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='1309'
+                    value={totalStats.amountOfImages}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
             </div>
           </div>
           <div className='profile-block-box' style={{ padding: '60px' }}>
-            {/* <div className='stripes'>
-              <div className='total'>
-                <p>900</p>
-                <p>800</p>
-                <p>700</p>
-                <p>600</p>
-                <p>500</p>
-                <p>400</p>
-                <p>300</p>
-                <p>200</p>
-                <p>100</p>
-                <p>0</p>
-              </div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='years-block'>
-                <>
-                  <p className='year'>2021</p>
-                  <p className='year-arrows'>
-                    <img src='../images/arrow_left_big.svg' alt='arrow left' />
-                    <img src='../images/arrow_right_big.svg' alt='arrow left' />
-                  </p>
-                  <p className='circle-gray'></p>
-                  <p className='year-text'>Free Accounts</p>
-                  <p className='circle-gray'></p>
-                  <p className='year-text'>Subscriptions</p>
-                </>
-              </div>
-            </div>
-            <div className='hor-stripe'>
-              <p>January</p>
-              <p>February</p>
-              <p>March</p>
-              <p>April</p>
-              <p>May</p>
-              <p>June</p>
-              <p>July</p>
-              <p>August</p>
-              <p>September</p>
-              <p>October</p>
-              <p>November</p>
-              <p>December</p>
-            </div> */}
             <Chart />
           </div>
         </>

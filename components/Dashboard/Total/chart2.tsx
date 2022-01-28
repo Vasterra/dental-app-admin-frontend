@@ -9,7 +9,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
+import axios from 'axios';
+import { API } from '../../../api/AWS-gateway';
+import { mockStates } from '../../../mock/yearStat';
 
 ChartJS.register(
   CategoryScale,
@@ -53,12 +55,12 @@ export const data = {
   datasets: [
     {
       label: 'Free Accounts',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: mockStates.graphicOfFreeAccounts.map(i => i.count),
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
     {
       label: 'Subscriptions',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: mockStates.graphicOfSubscriptions.map(i => i.count),
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],

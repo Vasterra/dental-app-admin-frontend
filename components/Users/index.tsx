@@ -17,7 +17,6 @@ export const Users: React.FC = () => {
       byName: false
     });
     const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
-    console.log(filtered);
 
     const getUsers = async():Promise<void> => {
         try {
@@ -94,7 +93,7 @@ export const Users: React.FC = () => {
 
   const handleButtonBackClick = () => {
     setUsersToRender(users);
-  }
+  };
 
     useEffect(() => {
         getUsers();

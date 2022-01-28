@@ -5,6 +5,7 @@ interface CurrentMonthProps {}
 
 export const CurrentMonth: React.FC<CurrentMonthProps> = () => {
   const { state } = useContext(AppContext);
+  console.log(state);
   const {
     amountOfClosedAccounts,
     amountOfClosedSubscriptions,
