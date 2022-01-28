@@ -9,9 +9,9 @@ import * as Yup from 'yup';
 
 const SearchSchema = Yup.object().shape({
     keyword: Yup.string()
-        .min(2, 'Минимальная длина - 2 символа')
-        .max(40, 'Максимальная длина запроса - 40 символов')
-        .required('Введите ключевое слово для поиска'),
+        .min(2, 'Min - 2 symbols')
+        .max(40, 'Max - 40 symbols')
+        .required('Enter username for search'),
 });
 
 type SearchFormProps = {

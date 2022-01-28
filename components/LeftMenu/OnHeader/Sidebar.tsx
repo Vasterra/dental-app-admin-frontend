@@ -59,10 +59,20 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({
               <li className={`leftmenu-list active}`}>
                 <img
                   className='leftmenu-link-image'
-                  src='../../images/user.svg'
+                  src='../../images/dashboard.svg'
                   alt='link image'
                 />
                 <a className='leftmenu-link'>Dashboard</a>
+              </li>
+            </Link>
+            <Link href={`/admin/users`}>
+              <li className={`leftmenu-list`}>
+                <img
+                  className='leftmenu-link-image'
+                  src='../../images/user.svg'
+                  alt='link image'
+                />
+                <a className='leftmenu-link'>Users</a>
               </li>
             </Link>
             <Link href={`/admin/settings`}>
@@ -73,16 +83,6 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({
                   alt='link image'
                 />
                 <a className='leftmenu-link'>Settings</a>
-              </li>
-            </Link>
-            <Link href={`/admin/user`}>
-              <li className={`leftmenu-list`}>
-                <img
-                  className='leftmenu-link-image'
-                  src='../../images/person_black_24dp.svg'
-                  alt='link image'
-                />
-                <a className='leftmenu-link'>Users</a>
               </li>
             </Link>
 

@@ -6,11 +6,18 @@ import { TableOfUsers } from './TableOfUsers/TableOfUsers';
 import { API } from '../../api/AWS-gateway';
 import { IUser } from '../../interfaces/IUser';
 import { getPeriod } from '../../utils/getDate';
+import { ButtonBack } from './ButtonBack/ButtonBack';
 
 export const Users: React.FC = () => {
     const [users, setUsers] = useState([]);
     const [usersToRender, setUsersToRender] = useState([]);
-    const [alreadyFiltered, setAlreadyFiltered] = useState(false);
+    const [alreadyFiltered, setAlreadyFiltered] = useState({
+      byStatus: false,
+      byPeriod: false,
+      byName: false
+    });
+    const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
+    console.log(filtered);
 
     const getUsers = async():Promise<void> => {
         try {
@@ -49,20 +56,20 @@ export const Users: React.FC = () => {
     };
 
     const handleSearchFormSubmit = ({ keyword }) => {
-        const usersToFilter = alreadyFiltered
+        const usersToFilter = alreadyFiltered.byStatus || alreadyFiltered.byPeriod
             ? usersToRender
             : users;
         const filUsers = usersToFilter.filter(
             (user: IUser) => user.username.toLowerCase().indexOf(keyword.toLowerCase()) > -1,
         );
         setUsersToRender(filUsers);
-        setAlreadyFiltered(true);
+      setAlreadyFiltered({...alreadyFiltered, byName: true});
     };
 
     const handlePeriodChange = ({ period }) => {
-        const usersToFilter = alreadyFiltered
-            ? usersToRender
-            : users;
+        const usersToFilter = alreadyFiltered.byPeriod
+            ? users
+            : usersToRender;
         const startPoint = getPeriod(period);
         const filUsers = usersToFilter.filter(
             (user: IUser) => {
@@ -71,19 +78,23 @@ export const Users: React.FC = () => {
             },
         );
         setUsersToRender(filUsers);
-        setAlreadyFiltered(true);
+        setAlreadyFiltered({...alreadyFiltered, byPeriod: true});
     };
 
     const handleStatusChange = ({ status }) => {
-        const usersToFilter = alreadyFiltered
-            ? usersToRender
-            : users;
+        const usersToFilter = alreadyFiltered.byStatus
+            ? users
+            : usersToRender;
         const filUsers = usersToFilter.filter(
             (user: IUser) => user.accountType === status,
         );
         setUsersToRender(filUsers);
-        setAlreadyFiltered(true);
+      setAlreadyFiltered({...alreadyFiltered, byStatus: true});
     };
+
+  const handleButtonBackClick = () => {
+    setUsersToRender(users);
+  }
 
     useEffect(() => {
         getUsers();
@@ -96,6 +107,10 @@ export const Users: React.FC = () => {
                 <span className="form-login-subtitle gray px12 mb-6px">Search Users</span>
                 <SearchForm
                     onSubmit={handleSearchFormSubmit}
+                />
+                <ButtonBack
+                  alreadyFiltered={filtered}
+                  onButtonBackClick={handleButtonBackClick}
                 />
                 <UsersListHeader
                     onPeriodChange={handlePeriodChange}
