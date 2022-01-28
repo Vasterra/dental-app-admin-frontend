@@ -10,4 +10,5 @@ export const API = {
   STAT_CUR_MONTHS: `${ADMIN_HOST}/api/admin/dashboard`,
   GET_USERS: `${ADMIN_HOST}/api/admin/users`,
   SUSPEND_USER: `${ADMIN_HOST}/api/admin/users/suspend`,
+  DELETE_USER: `${PROFILE_HOST}/api/dentist/profile/account/deleteAccount`,
 };

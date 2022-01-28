@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import styles from './User.module.css';
 import cn from 'classnames/bind';
-import axios from "axios";
-import {API} from "../../../api/AWS-gateway";
 
 interface UserProps {
     username: string,
@@ -14,6 +12,7 @@ interface UserProps {
     auth_time: string | null,
     subscription_id: string | null,
     onSuspendUserClick: ({ email: string }) => void;
+    onDeleteUserClick: ({ email: string }) => void;
 }
 
 const cx = cn.bind(styles);
@@ -43,6 +42,12 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
         })
     };
 
+    const onDeleteUserClick = () => {
+        props.onDeleteUserClick({
+            email: props.email
+        })
+    };
+
     return(
         <li className={cn(styles.userItem, theme)}>
             <section className={cn(styles.user, theme)}>
@@ -68,7 +73,13 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                     className={cn(styles.link, styles.openBtn, theme)}
                     onClick={() => { setOpened(!opened) }}
                 >
+                    { !opened &&
                     <img className={cn(styles.openBtn_img, svgColor)} src="../images/plus.svg"/>
+                    }
+                    { opened &&
+                    <img className={cn(styles.openBtn_img, svgColor)} src="../images/minus.svg"/>
+                    }
+
                 </button>
             </section>
             <section className={cn(styles.userDetails, visibility, theme)}>
@@ -103,6 +114,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                     <div className={styles.btnWrap}>
                         <button type='button'
                                 className={styles.suspendDeleteBtn}
+                                onClick={onDeleteUserClick}
                         >
                             Delete
                         </button>

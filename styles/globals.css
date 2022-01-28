@@ -223,6 +223,10 @@ fieldset.FormGroup {
 	margin-top: 1rem !important;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 label {
 	display: inline-block;
 }
@@ -313,7 +317,7 @@ label {
 	border-color: #86B7FE;
 	outline: 0;
 	background-color: #FFF;
-	box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+	box-shadow: 0 0 0 0.25rem rgba(13 110 253 .25);
 }
 
 /* stylelint-disable */
@@ -332,7 +336,7 @@ label {
 .btn-success.active:focus,
 .btn-success:active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-	box-shadow: 0 0 0 0.25rem rgb(60 153 110 / 50%);
+	box-shadow: 0 0 0 0.25rem rgba(60 153 110 .5);
 }
 /* stylelint-enable */
 .AppWrapper [type=button]:not(:disabled),
@@ -386,7 +390,7 @@ label {
 	border-color: #86B7FE;
 	outline: 0;
 	background-color: #FFF;
-	box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+	box-shadow: 0 0 0 0.25rem rgba(13 110 253 .25);
 }
 
 #coupon_input_img {

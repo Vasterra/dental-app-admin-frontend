@@ -6,6 +6,7 @@ import { IUser } from '../../../interfaces/IUser';
 interface TableOfUsersProps {
     users: IUser[],
     onSuspendUserClick: ({ email: string }) => void;
+    onDeleteUserClick: ({ email: string }) => void;
 }
 
 export const TableOfUsers: React.FC<TableOfUsersProps> = (props: TableOfUsersProps) => {
@@ -16,11 +17,12 @@ export const TableOfUsers: React.FC<TableOfUsersProps> = (props: TableOfUsersPro
               created_at={user.created_at}
               exp={user.exp}
               accountType={user.accountType}
-              email= {user.email}
+              email={user.email}
               gdc_number={user.gdc_number}
               auth_time={user.auth_time}
               subscription_id={user.subscription_id}
               onSuspendUserClick={props.onSuspendUserClick}
+              onDeleteUserClick={props.onDeleteUserClick}
           />
       )}</ul>
   )

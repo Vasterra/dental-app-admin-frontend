@@ -32,7 +32,17 @@ export const Users: React.FC = () => {
 
     const handleSuspendUserClick = async({email}):Promise<void> => {
         try {
-            const res = await axios.put(`${API.SUSPEND_USER}?email=${email}`);
+            await axios.put(`${API.SUSPEND_USER}?email=${email}`);
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    const handleDeleteUserClick = async({email}):Promise<void> => {
+        try {
+            await axios.delete(`${API.DELETE_USER}?email=${email}`);
+            const usersUpdated = users.filter((user: IUser) => user.email !== email);
+            setUsersToRender(usersUpdated);
         } catch (e) {
             console.log(e)
         }
@@ -94,6 +104,7 @@ export const Users: React.FC = () => {
                 <TableOfUsers
                     users={usersToRender}
                     onSuspendUserClick={handleSuspendUserClick}
+                    onDeleteUserClick={handleDeleteUserClick}
                 />
             </div>
         </div>
