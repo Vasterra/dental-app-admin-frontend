@@ -1,13 +1,15 @@
 import { ActionMap, Maybe } from './types';
+import {IMonthStats, IService, ISubSettings, IYearStats, IUser} from './interfaces';
 
 export enum UserTypes {
   RESET = 'RESET_USER',
   LOGIN = 'USER_LOGIN',
   LOGOUT = 'USER_LOGOUT',
   DELETE_SERVICE = 'DELETE_SERVICE',
-  SET_SERVICES = 'SET_SERVICES',
-  SET_SUBSCRIBER_SETTINGS = 'SET_SUBSCRIBER_SETTINGS',
-  SET_MONTHLY_STATS = 'SET_MONTHLY_STATS',
+  GET_SERVICES = 'GET_SERVICES',
+  GET_SUBSCRIBER_SETTINGS = 'GET_SUBSCRIBER_SETTINGS',
+  GET_MONTHLY_STATS = 'GET_MONTHLY_STATS',
+  GET_YEAR_STATS = 'GET_YEAR_STATS',
   OPEN_LEFT_MENU = 'OPEN_LEFT_MENU',
 }
 
@@ -19,38 +21,12 @@ export type userPayload = {
   [UserTypes.DELETE_SERVICE]: {
     id: string;
   };
-  [UserTypes.SET_SERVICES]: Service[];
-  [UserTypes.SET_SUBSCRIBER_SETTINGS]: SubSettings;
-  [UserTypes.SET_MONTHLY_STATS]: MonthStats;
+  [UserTypes.GET_SERVICES]: IService[];
+  [UserTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [UserTypes.GET_MONTHLY_STATS]: IMonthStats;
+  [UserTypes.GET_YEAR_STATS]: IYearStats;
   [UserTypes.OPEN_LEFT_MENU]: boolean;
 };
-
-export interface Service {
-  service_name: string;
-  service_id: string;
-}
-
-export interface MonthStats {
-  amountOfNewAccounts: number;
-  amountOfSubscriptions: number;
-  amountOfClosedAccounts: number;
-  amountOfClosedSubscriptions: number;
-  amountOfImages: number;
-}
-
-export interface SubSettings {
-  freeHasPhoneNumber: false;
-  freeHasWebsite: false;
-  freeIsVerified: false;
-  freeMaxLocations: 1;
-  freeMaxServices: 1;
-  paidHasPhoneNumber: false;
-  paidHasWebsite: false;
-  paidIsVerified: false;
-  paidMaxLocations: 1;
-  paidMaxServices: 1;
-  setting_code: '';
-}
 
 export type TUserReducerState = {
   isLogged: boolean;
@@ -59,15 +35,16 @@ export type TUserReducerState = {
     email: string;
     avatar_url: string;
   };
-  services: Service[];
-  subscriberSettings: SubSettings;
+  services: IService[];
+  subscriberSettings: ISubSettings;
   premiumInformation: {
     terms: string;
     setting_code: string | 'premium_settings';
     features: string[];
     price: number;
   };
-  monthlyStats: MonthStats;
+  monthlyStats: IMonthStats;
+  yearStats: IYearStats;
   isOpenLeftMenu: boolean;
 };
 
@@ -101,11 +78,20 @@ export const UserInitialState: TUserReducerState = {
     terms: '',
   },
   monthlyStats: {
-    amountOfNewAccounts: 5,
-    amountOfSubscriptions: 1,
+    amountOfNewAccounts: 0,
+    amountOfSubscriptions: 0,
     amountOfClosedAccounts: 0,
     amountOfClosedSubscriptions: 0,
     amountOfImages: 0,
+  },
+  yearStats: {
+    amountOfNewAccounts: 0,
+    amountOfSubscriptions: 0,
+    amountOfClosedAccounts: 0,
+    amountOfClosedSubscriptions: 0,
+    amountOfImages: 0,
+    graphicOfFreeAccounts: [],
+    graphicOfSubscriptions: []
   },
   isOpenLeftMenu: true,
 };
@@ -126,12 +112,14 @@ export const userReducer = (
         (item) => item.service_id !== action.payload.id
       );
       return { ...state, services: filterServices };
-    case UserTypes.SET_SERVICES:
+    case UserTypes.GET_SERVICES:
       return { ...state, services: action.payload };
-    case UserTypes.SET_SUBSCRIBER_SETTINGS:
+    case UserTypes.GET_SUBSCRIBER_SETTINGS:
       return { ...state, subscriberSettings: { ...action.payload } };
-    case UserTypes.SET_MONTHLY_STATS:
+    case UserTypes.GET_MONTHLY_STATS:
       return { ...state, monthlyStats: { ...action.payload } };
+    case UserTypes.GET_YEAR_STATS:
+      return { ...state, yearStats: { ...action.payload } };
     case UserTypes.OPEN_LEFT_MENU:
       return { ...state, isOpenLeftMenu: action.payload };
     default:

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import styles from './SearchForm.module.css';
 import {
     Formik,
@@ -15,7 +15,7 @@ const SearchSchema = Yup.object().shape({
 });
 
 type SearchFormProps = {
-    onSubmit: ({ keyword: string }) => void;
+    onSubmit: ({ keyword: string }) => void
 }
 
 const SearchForm:React.FC<SearchFormProps> = (props: SearchFormProps) => {
@@ -60,46 +60,3 @@ const SearchForm:React.FC<SearchFormProps> = (props: SearchFormProps) => {
 }
 
 export default SearchForm;
-
-// export const SearchForm: React.FC = (props) => {
-//     return (
-//         <div>
-//         <Formik
-//             initialValues={{
-//                 keyword: '',
-//             }}
-//
-//             validationSchema={ SearchSchema }
-//
-//             onSubmit={ (values) => {
-//                 console.log(values);
-//                 props.onSubmit({
-//                     keyword: values.keyword,
-//                 });
-//             }}
-//         >
-//             {({
-//                   errors,
-//                   touched
-//                 }) =>
-//                 <Form className={styles.form}>
-//                     <label htmlFor='search' className={styles.label}>Search Users</label>
-//                     <Field
-//                         type="text"
-//                         id="search"
-//                         name="search"
-//                         placeholder="Search users"
-//                         className={styles.input}
-//                         autoComplete='off'
-//                     />
-//                     <img src='../images/search.svg' alt='search' className={styles.searchIcon}/>
-//                     {errors.keyword && touched.keyword
-//                         ? <span className={styles.inputError}>{errors.keyword}</span>
-//                         : <span className={styles.inputError}> </span>
-//                     }
-//                 </Form>
-//             }
-//         </Formik>
-//         </div>
-//     );
-// };

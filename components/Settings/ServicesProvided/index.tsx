@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { API } from '../../../api/AWS-gateway';
 import { AppContext } from '../../../context/app.context';
-import { Service, UserTypes } from '../../../reducers';
+import { UserTypes } from '../../../reducers';
+import { IService } from '../../../reducers/interfaces';
 import { ISetNotofication } from '../../Toast';
 import notify from '../../Toast';
 
@@ -16,7 +17,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
   const [serviceEditing, setServiceEditing] = useState<any>();
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingVAlue, setServiceEditingValue] = useState<any>();
-  const [services, setLocalServices] = useState<Service[]>([]);
+  const [services, setLocalServices] = useState<IService[]>([]);
   const [newService, setNewService] = useState('');
 
   const setNotification = useCallback<ISetNotofication>(
@@ -47,11 +48,11 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
   }, [defaultServices]);
 
   const onHandleAddService = async () => {
-    const { data } = await axios.post<Service>(API.CHANGE_SERVICES, {
+    const { data } = await axios.post<IService>(API.CHANGE_SERVICES, {
       service_name: newService,
     });
     dispatch({
-      type: UserTypes.SET_SERVICES,
+      type: UserTypes.GET_SERVICES,
       payload: [...services, { ...data }],
     });
     setNotification({
@@ -108,7 +109,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
       const res = await axios.put(API.CHANGE_SERVICES, body);
       console.log(res);
       dispatch({
-        type: UserTypes.SET_SERVICES,
+        type: UserTypes.GET_SERVICES,
         payload: services,
       });
       setNotification({
@@ -148,7 +149,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
           <div>
             <p className='form-login-title green px20'>Services Provided</p>
             <p className='form-login-subtitle gray px12 '>
-              Available Service Categories
+              Available IService Categories
             </p>
           </div>
         </div>
@@ -156,7 +157,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
           <div className='profile-block-box'>
             <div>
               <p className='form-profile-label'>
-                <label className='form-profile-label'>Add Service</label>
+                <label className='form-profile-label'>Add IService</label>
               </p>
               <p>
                 <input
@@ -165,7 +166,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                   name='add_service'
                   id='add_service'
                   value={newService}
-                  placeholder='Service Name Here'
+                  placeholder='IService Name Here'
                   onChange={(e) => {
                     setNewService(e.target.value);
                   }}

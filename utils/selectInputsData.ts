@@ -1,14 +1,14 @@
 export const optionsPeriod = [
-    { value: 'last week', label: 'Last Week' },
-    { value: 'last month', label: 'Last Month' },
-    { value: 'last 3 months', label: 'Last 3 Months' },
-    { value: 'last 6 months', label: 'Last 6 Months' },
-    { value: 'last year', label: 'Last Year' }
+    { value: 'Last week', label: 'Last Week' },
+    { value: 'Last month', label: 'Last Month' },
+    { value: 'Last 3 months', label: 'Last 3 Months' },
+    { value: 'Last 6 months', label: 'Last 6 Months' },
+    { value: 'Last year', label: 'Last Year' }
 ];
 
 export const optionsStatus = [
-    { value: 'premium', label: 'Paid' },
-    { value: 'free', label: 'Free' }
+    { value: 'Paid', label: 'Paid' },
+    { value: 'Free', label: 'Free' }
 ];
 
 export const selectStyles = {
@@ -36,7 +36,7 @@ export const selectStyles = {
         padding: '0'
     }),
     placeholder: styles => ({ ...styles,
-        color: 'var(--color-black)'
+        color: 'var(--color-black)',
     }),
     option: (styles, {isFocused, isSelected}) => ({
         ...styles,

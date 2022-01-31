@@ -1,19 +1,19 @@
 const getDays = (period) => {
     let days;
     switch (period) {
-        case 'last week':
+        case 'Last week':
             days = 7;
             break;
-        case 'last month':
+        case 'Last month':
             days = 30;
             break;
-        case 'last 3 months':
+        case 'Last 3 months':
             days = 90;
             break;
-        case 'last 6 months':
+        case 'Last 6 months':
             days = 180;
             break;
-        case 'last year':
+        case 'Last year':
             days = 365;
     }
     return days;

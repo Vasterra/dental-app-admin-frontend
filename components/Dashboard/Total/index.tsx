@@ -1,32 +1,16 @@
 import { Chart } from './chart2';
-import axios from 'axios';
-import { API } from '../../../api/AWS-gateway';
-import {useEffect, useState} from "react";
+import { useContext } from 'react';
+import { AppContext } from '../../../context/app.context';
 
 export const TotalSubs: React.FC<any> = () => {
-  const [totalStats, setTotalStats] = useState({
-    amountOfClosedAccounts: 0,
-    amountOfClosedSubscriptions: 0,
-    amountOfImages: 0,
-    amountOfNewAccounts: 0,
-    amountOfSubscriptions: 0
-  });
-
-  const getTotalStats = async () => {
-  const body = {
-    year: '2021'
-  };
-  try {
-    const res = await axios.post(`${API.STAT_CUR_MONTHS}`, body);
-    setTotalStats(res.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-  useEffect(() => {
-    getTotalStats();
-  }, []);
+  const { state } = useContext(AppContext);
+  const {
+    amountOfClosedAccounts,
+    amountOfClosedSubscriptions,
+    amountOfImages,
+    amountOfNewAccounts,
+    amountOfSubscriptions,
+  } = state.userState.yearStats;
 
   return (
     <>
@@ -46,7 +30,7 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value={totalStats.amountOfSubscriptions}
+                    value={amountOfSubscriptions}
                     onChange={() => {}}
                   />
                 </p>
@@ -61,7 +45,7 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value={totalStats.amountOfNewAccounts}
+                    value={amountOfNewAccounts}
                     onChange={() => {}}
                   />
                 </p>
@@ -79,7 +63,7 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value={totalStats.amountOfClosedSubscriptions}
+                    value={amountOfClosedSubscriptions}
                     onChange={() => {}}
                   />
                 </p>
@@ -94,7 +78,7 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value={totalStats.amountOfClosedAccounts}
+                    value={amountOfClosedAccounts}
                     onChange={() => {}}
                   />
                 </p>
@@ -109,7 +93,7 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value={totalStats.amountOfImages}
+                    value={amountOfImages}
                     onChange={() => {}}
                   />
                 </p>

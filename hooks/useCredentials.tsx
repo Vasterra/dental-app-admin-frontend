@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { AppContext } from '../context/app.context';
-import { MonthStats, UserTypes } from '../reducers';
+import { UserTypes } from '../reducers';
+import {IMonthStats, IUser, IYearStats} from '../reducers/interfaces';
 import axios from 'axios';
 import { API } from '../api/AWS-gateway';
 import { IAdminFullDataResponse } from '../components';
@@ -43,8 +44,8 @@ export const useCredentials = () => {
       }
 
       try {
-        const { data } = await axios.get<MonthStats>(API.STAT_CUR_MONTHS);
-        dispatch({ type: UserTypes.SET_MONTHLY_STATS, payload: { ...data } });
+        const { data } = await axios.get<IMonthStats>(API.STAT_CUR_MONTHS);
+        dispatch({ type: UserTypes.GET_MONTHLY_STATS, payload: { ...data } });
       } catch (exp) {
         setNotification({
           type: 'error',
@@ -52,6 +53,18 @@ export const useCredentials = () => {
           autoClose: 3,
         });
       }
+
+      try {
+        const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: "2021"});
+        dispatch({ type: UserTypes.GET_YEAR_STATS, payload: { ...data } });
+      } catch (exp) {
+        setNotification({
+          type: 'error',
+          message: 'Failed to load yearly stats!',
+          autoClose: 3,
+        });
+      }
+
     })();
   }, []);
 

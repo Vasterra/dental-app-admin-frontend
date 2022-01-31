@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import SearchForm from './SearchForm/SearchForm';
-import { UsersListHeader } from './UsersListHeader/UsersListHeader';
 import { TableOfUsers } from './TableOfUsers/TableOfUsers';
 import { API } from '../../api/AWS-gateway';
-import { IUser } from '../../interfaces/IUser';
+import { IUser } from '../../reducers/interfaces';
 import { getPeriod } from '../../utils/getDate';
-import { ButtonBack } from './ButtonBack/ButtonBack';
+import FilterUsersForm from './UsersListHeader/FilterUsersForm';
+import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 
 export const Users: React.FC = () => {
     const [users, setUsers] = useState([]);
+    const [filteredByPeriod, setFilteredByPeriod] = useState([]);
+    const [filteredByStatus, setFilteredByStatus] = useState([]);
     const [usersToRender, setUsersToRender] = useState([]);
     const [alreadyFiltered, setAlreadyFiltered] = useState({
       byStatus: false,
@@ -17,6 +19,8 @@ export const Users: React.FC = () => {
       byName: false
     });
     const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
+    const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
 
     const getUsers = async():Promise<void> => {
         try {
@@ -44,14 +48,27 @@ export const Users: React.FC = () => {
         }
     };
 
-    const handleDeleteUserClick = async({email}):Promise<void> => {
+    const openConfirmPopup = ({ email }) => {
+      setConfirmPopupOpened(true);
+      setUserEmail(email);
+    };
+
+    const closeConfirmPopup = () => {
+      setConfirmPopupOpened(false);
+      setUserEmail('');
+    };
+
+    const handleDeleteUserClick = async({confirm}):Promise<void> => {
+      if (confirm === 'delete') {
         try {
-            await axios.delete(`${API.DELETE_USER}?email=${email}`);
-            const usersUpdated = users.filter((user: IUser) => user.email !== email);
-            setUsersToRender(usersUpdated);
+          await axios.delete(`${API.DELETE_USER}?email=${userEmail}`);
+          const usersUpdated = users.filter((user: IUser) => user.email !== userEmail);
+          setUsersToRender(usersUpdated);
+          setUserEmail('');
         } catch (e) {
-            console.log(e)
+          console.log(e)
         }
+      }
     };
 
     const handleSearchFormSubmit = ({ keyword }) => {
@@ -62,37 +79,49 @@ export const Users: React.FC = () => {
             (user: IUser) => user.username.toLowerCase().indexOf(keyword.toLowerCase()) > -1,
         );
         setUsersToRender(filUsers);
-      setAlreadyFiltered({...alreadyFiltered, byName: true});
+        setAlreadyFiltered({...alreadyFiltered, byName: true});
     };
 
     const handlePeriodChange = ({ period }) => {
-        const usersToFilter = alreadyFiltered.byPeriod
-            ? users
-            : usersToRender;
+      if (period) {
+        const usersToFilter = alreadyFiltered.byStatus
+          ? filteredByStatus
+          : users;
         const startPoint = getPeriod(period);
         const filUsers = usersToFilter.filter(
-            (user: IUser) => {
-                const creationPoint = new Date(user.created_at)
-                return creationPoint > startPoint
-            },
+          (user: IUser) => {
+            const creationPoint = new Date(user.created_at)
+            return creationPoint > startPoint
+          },
         );
         setUsersToRender(filUsers);
+        setFilteredByPeriod(filUsers);
         setAlreadyFiltered({...alreadyFiltered, byPeriod: true});
+      }
     };
 
     const handleStatusChange = ({ status }) => {
-        const usersToFilter = alreadyFiltered.byStatus
-            ? users
-            : usersToRender;
+      if (status) {
+        const usersToFilter = alreadyFiltered.byPeriod
+          ? filteredByPeriod
+          : users;
+        const formattedStatus = status === "Paid" ? "premium" : "free"
         const filUsers = usersToFilter.filter(
-            (user: IUser) => user.accountType === status,
+          (user: IUser) => user.accountType === formattedStatus,
         );
         setUsersToRender(filUsers);
-      setAlreadyFiltered({...alreadyFiltered, byStatus: true});
+        setFilteredByStatus(filUsers);
+        setAlreadyFiltered({...alreadyFiltered, byStatus: true});
+      }
     };
 
-  const handleButtonBackClick = () => {
+  const handleResetFiltersClick = () => {
     setUsersToRender(users);
+    setAlreadyFiltered({
+      byName: false,
+      byStatus: false,
+      byPeriod: false
+    });
   };
 
     useEffect(() => {
@@ -107,18 +136,22 @@ export const Users: React.FC = () => {
                 <SearchForm
                     onSubmit={handleSearchFormSubmit}
                 />
-                <ButtonBack
-                  alreadyFiltered={filtered}
-                  onButtonBackClick={handleButtonBackClick}
-                />
-                <UsersListHeader
+                <FilterUsersForm
                     onPeriodChange={handlePeriodChange}
                     onStatusChange={handleStatusChange}
+                    onResetFiltersClick={handleResetFiltersClick}
+                    alreadyFiltered={filtered}
                 />
                 <TableOfUsers
                     users={usersToRender}
                     onSuspendUserClick={handleSuspendUserClick}
-                    onDeleteUserClick={handleDeleteUserClick}
+                    onDeleteUserClick={openConfirmPopup}
+                />
+                <ConfirmPopup
+                  onSubmit={handleDeleteUserClick}
+                  opened={confirmPopupOpened}
+                  userEmail={userEmail}
+                  onBtnCloseClick={closeConfirmPopup}
                 />
             </div>
         </div>

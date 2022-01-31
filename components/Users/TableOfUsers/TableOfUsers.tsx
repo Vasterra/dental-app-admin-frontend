@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './TableOfUsers.module.css';
 import { User } from '../User/User';
-import { IUser } from '../../../interfaces/IUser';
+import { IUser } from '../../../reducers/interfaces';
 
 interface TableOfUsersProps {
     users: IUser[],

@@ -6,7 +6,8 @@ import { AppContext } from '../../../context/app.context';
 import { Switch } from '../../common/Switch';
 import { ISetNotofication } from '../../Toast';
 import notify from '../../Toast';
-import { SubSettings, UserTypes } from '../../../reducers';
+import { UserTypes } from '../../../reducers';
+import { ISubSettings } from "../../../reducers/interfaces";
 
 interface PaidSubscriberProps {}
 
@@ -88,9 +89,9 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
     };
 
     try {
-      const { data } = await axios.post<SubSettings>(API.SETTINGS_CHANGE, body);
+      const { data } = await axios.post<ISubSettings>(API.SETTINGS_CHANGE, body);
       dispatch({
-        type: UserTypes.SET_SUBSCRIBER_SETTINGS,
+        type: UserTypes.GET_SUBSCRIBER_SETTINGS,
         payload: { ...data },
       });
       setNotification({
