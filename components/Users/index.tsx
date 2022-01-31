@@ -5,7 +5,7 @@ import { TableOfUsers } from './TableOfUsers/TableOfUsers';
 import { API } from '../../api/AWS-gateway';
 import { IUser } from '../../reducers/interfaces';
 import { getPeriod } from '../../utils/getDate';
-import FilterUsersForm from './UsersListHeader/FilterUsersForm';
+import FilterUsersForm from './FilterUsersForm/FilterUsersForm';
 import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 
 export const Users: React.FC = () => {
