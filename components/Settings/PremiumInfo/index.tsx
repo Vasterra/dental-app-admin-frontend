@@ -25,6 +25,8 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
   const { features, price, setting_code, terms } =
     state.userState.premiumInformation;
 
+  console.log(state.userState.premiumInformation)
+
   const {
     register,
     handleSubmit,
@@ -77,21 +79,23 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
               <p className='form-profile-label'>
                 <label className='form-profile-label'>Premium Features</label>
               </p>
+              <ul className='form-profile-list'>
+                {features.map((item, index) => (
+                  <li key={index}>
+                    <input
+                      className='form-profile-input'
+                      type='text'
+                      name='features'
+                      id=''
+                      value={item}
+                      placeholder='Feature 2'
+                      onChange={() => {}}
+                    />
+                  </li>
+                ))}
+              </ul>
 
-              {features.map((item) => (
-                <p>
-                  <input
-                    className='form-profile-input'
-                    type='text'
-                    name=''
-                    id=''
-                    value={item}
-                    placeholder='Feature 2'
-                  />
-                </p>
-              ))}
-
-              <p className='add-plus'>
+              <div className='add-plus'>
                 <input
                   className='form-profile-input '
                   type='text'
@@ -99,6 +103,7 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   id=''
                   value=''
                   placeholder=''
+                  onChange={() => {}}
                 />
                 <img
                   className='plus'
@@ -106,7 +111,7 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   src='../images/plus.svg'
                   alt=''
                 />
-              </p>
+              </div>
             </div>
           </div>
           <div className='profile-block-box'>
@@ -123,6 +128,7 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   name='pricePremiumInfo'
                   id='pricePremiumInfo'
                   value={price / 100}
+                  onChange={() => {}}
                 />
               </p>
             </div>
@@ -140,6 +146,7 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   id=''
                   value={terms}
                   placeholder='Web Link'
+                  onChange={() => {}}
                 />
               </p>
             </div>

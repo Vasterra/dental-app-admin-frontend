@@ -82,11 +82,17 @@ export const Users: React.FC = () => {
         const usersUpdated = users.filter((user: IUser) => user.email !== userEmail);
         setUsersToRender(usersUpdated);
         closeConfirmPopup();
+        setNotification({
+          type: 'success',
+          message: `User was deleted!`,
+          autoClose: 3,
+          position: 'top-right',
+        });
       } catch (exp) {
         setNotification({
           type: 'error',
           message: `Failed to delete user!`,
-          autoClose: 2,
+          autoClose: 3,
           position: 'top-right',
         });
       }

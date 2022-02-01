@@ -990,6 +990,10 @@ input[type=file]::-webkit-file-upload-button {
 	line-height: normal;
 }
 
+.form-profile-list {
+  list-style-type: none;
+}
+
 .form-profile-input {
 	position: relative;
 

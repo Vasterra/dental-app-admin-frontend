@@ -26,7 +26,7 @@ const ConfirmPopup:React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => {
       <div className={styles.content}>
         <h2 className={styles.title}>Warning!</h2>
         <p className={styles.warning}>
-          User {props.userEmail} profile and information will be permanently deleted.
+          User's {props.userEmail} profile and information will be permanently deleted.
           You can't recover the account. Please, type "delete" to continue
         </p>
         <Formik

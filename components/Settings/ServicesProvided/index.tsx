@@ -157,7 +157,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
           <div className='profile-block-box'>
             <div>
               <p className='form-profile-label'>
-                <label className='form-profile-label'>Add IService</label>
+                <label className='form-profile-label'>Add Service</label>
               </p>
               <p>
                 <input
@@ -166,7 +166,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                   name='add_service'
                   id='add_service'
                   value={newService}
-                  placeholder='IService Name Here'
+                  placeholder='Service Name Here'
                   onChange={(e) => {
                     setNewService(e.target.value);
                   }}

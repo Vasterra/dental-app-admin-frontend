@@ -1,9 +1,9 @@
 export const optionsPeriod = [
-    { value: 'Last week', label: 'Last Week' },
-    { value: 'Last month', label: 'Last Month' },
-    { value: 'Last 3 months', label: 'Last 3 Months' },
-    { value: 'Last 6 months', label: 'Last 6 Months' },
-    { value: 'Last year', label: 'Last Year' }
+    { value: 'Last Week', label: 'Last Week' },
+    { value: 'Last Month', label: 'Last Month' },
+    { value: 'Last 3 Months', label: 'Last 3 Months' },
+    { value: 'Last 6 Months', label: 'Last 6 Months' },
+    { value: 'Last Year', label: 'Last Year' }
 ];
 
 export const optionsStatus = [
