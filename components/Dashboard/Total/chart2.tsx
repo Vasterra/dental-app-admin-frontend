@@ -56,12 +56,12 @@ export const data = {
     {
       label: 'Free Accounts',
       data: mockStates.graphicOfFreeAccounts.map(i => i.count),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      backgroundColor: 'rgba(146, 205, 182, 0.8)',
     },
     {
       label: 'Subscriptions',
       data: mockStates.graphicOfSubscriptions.map(i => i.count),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      backgroundColor: 'rgba(33, 110, 98, 0.8)',
     },
   ],
 };
