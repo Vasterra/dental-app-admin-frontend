@@ -6,7 +6,7 @@ import { API } from '../../../api/AWS-gateway';
 import { AppContext } from '../../../context/app.context';
 import { UserTypes } from '../../../reducers';
 import { IService } from '../../../reducers/interfaces';
-import { ISetNotofication } from '../../Toast';
+import { ISetNotification } from '../../Toast';
 import notify from '../../Toast';
 
 interface ServicesProvidedProps {}
@@ -20,7 +20,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
   const [services, setLocalServices] = useState<IService[]>([]);
   const [newService, setNewService] = useState('');
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },
@@ -52,7 +52,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
       service_name: newService,
     });
     dispatch({
-      type: UserTypes.GET_SERVICES,
+      type: UserTypes.SET_SERVICES,
       payload: [...services, { ...data }],
     });
     setNotification({
@@ -109,7 +109,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
       const res = await axios.put(API.CHANGE_SERVICES, body);
       console.log(res);
       dispatch({
-        type: UserTypes.GET_SERVICES,
+        type: UserTypes.SET_SERVICES,
         payload: services,
       });
       setNotification({

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styles from './User.module.css';
 import cn from 'classnames/bind';
+import Link from "next/link";
 
 interface UserProps {
     username: string,
@@ -20,7 +21,7 @@ const cx = cn.bind(styles);
 export const User: React.FC<UserProps> = (props: UserProps) => {
     const [opened, setOpened] = useState(false);
 
-    const creationDate = props.created_at.toString().split('/').reverse().join('/');
+    const creationDate = props.created_at?.toString().split('/').reverse().join('/');
 
     const theme = cx({
         default: !opened,
@@ -64,10 +65,10 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                 </span>
                 }
 
-                <a className={cn(styles.link, styles.text, theme)}>
+                  <a className={cn(styles.link, styles.text, theme)}>
                     <img className={svgColor} src="../images/user.svg"/>
                     <span>View Profile</span>
-                </a>
+                  </a>
 
                 <button
                     className={cn(styles.link, styles.openBtn, theme)}

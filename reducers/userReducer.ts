@@ -6,8 +6,8 @@ export enum UserTypes {
   LOGIN = 'USER_LOGIN',
   LOGOUT = 'USER_LOGOUT',
   DELETE_SERVICE = 'DELETE_SERVICE',
-  GET_SERVICES = 'GET_SERVICES',
-  GET_SUBSCRIBER_SETTINGS = 'GET_SUBSCRIBER_SETTINGS',
+  SET_SERVICES = 'SET_SERVICES',
+  SET_SUBSCRIBER_SETTINGS = 'SET_SUBSCRIBER_SETTINGS',
   GET_MONTHLY_STATS = 'GET_MONTHLY_STATS',
   GET_YEAR_STATS = 'GET_YEAR_STATS',
   OPEN_LEFT_MENU = 'OPEN_LEFT_MENU',
@@ -21,8 +21,8 @@ export type userPayload = {
   [UserTypes.DELETE_SERVICE]: {
     id: string;
   };
-  [UserTypes.GET_SERVICES]: IService[];
-  [UserTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [UserTypes.SET_SERVICES]: IService[];
+  [UserTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
   [UserTypes.GET_MONTHLY_STATS]: IMonthStats;
   [UserTypes.GET_YEAR_STATS]: IYearStats;
   [UserTypes.OPEN_LEFT_MENU]: boolean;
@@ -112,9 +112,9 @@ export const userReducer = (
         (item) => item.service_id !== action.payload.id
       );
       return { ...state, services: filterServices };
-    case UserTypes.GET_SERVICES:
+    case UserTypes.SET_SERVICES:
       return { ...state, services: action.payload };
-    case UserTypes.GET_SUBSCRIBER_SETTINGS:
+    case UserTypes.SET_SUBSCRIBER_SETTINGS:
       return { ...state, subscriberSettings: { ...action.payload } };
     case UserTypes.GET_MONTHLY_STATS:
       return { ...state, monthlyStats: { ...action.payload } };

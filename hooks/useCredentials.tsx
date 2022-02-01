@@ -6,7 +6,7 @@ import {IMonthStats, IUser, IYearStats} from '../reducers/interfaces';
 import axios from 'axios';
 import { API } from '../api/AWS-gateway';
 import { IAdminFullDataResponse } from '../components';
-import { ISetNotofication } from '../components/Toast';
+import { ISetNotification } from '../components/Toast';
 import notify from '../components/Toast';
 
 export const useCredentials = () => {
@@ -14,7 +14,7 @@ export const useCredentials = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },
@@ -53,18 +53,6 @@ export const useCredentials = () => {
           autoClose: 3,
         });
       }
-
-      try {
-        const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: "2021"});
-        dispatch({ type: UserTypes.GET_YEAR_STATS, payload: { ...data } });
-      } catch (exp) {
-        setNotification({
-          type: 'error',
-          message: 'Failed to load yearly stats!',
-          autoClose: 3,
-        });
-      }
-
     })();
   }, []);
 

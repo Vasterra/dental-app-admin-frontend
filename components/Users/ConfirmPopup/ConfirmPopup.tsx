@@ -26,11 +26,8 @@ const ConfirmPopup:React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => {
       <div className={styles.content}>
         <h2 className={styles.title}>Warning!</h2>
         <p className={styles.warning}>
-          You are going to delete user {props.userEmail}.
-        </p>
-        <p className={styles.warning}>
-          This action is irreversible, you can't recover the account.
-          Please, type "delete" to continue
+          User {props.userEmail} profile and information will be permanently deleted.
+          You can't recover the account. Please, type "delete" to continue
         </p>
         <Formik
           initialValues={{
@@ -54,7 +51,7 @@ const ConfirmPopup:React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => {
                 autoComplete='off'
               />
               <button
-                type='button'
+                type='submit'
                 className={styles.btnSubmit}
                 disabled={ values.confirm !== "delete"}
               >

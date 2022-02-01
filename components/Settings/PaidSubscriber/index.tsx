@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { API } from '../../../api/AWS-gateway';
 import { AppContext } from '../../../context/app.context';
 import { Switch } from '../../common/Switch';
-import { ISetNotofication } from '../../Toast';
+import { ISetNotification } from '../../Toast';
 import notify from '../../Toast';
 import { UserTypes } from '../../../reducers';
 import { ISubSettings } from "../../../reducers/interfaces";
@@ -45,7 +45,7 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
     paidIsVerified,
   });
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },
@@ -91,7 +91,7 @@ export const PaidSubscriber: React.FC<PaidSubscriberProps> = () => {
     try {
       const { data } = await axios.post<ISubSettings>(API.SETTINGS_CHANGE, body);
       dispatch({
-        type: UserTypes.GET_SUBSCRIBER_SETTINGS,
+        type: UserTypes.SET_SUBSCRIBER_SETTINGS,
         payload: { ...data },
       });
       setNotification({

@@ -6,7 +6,7 @@ import { DetailedHTMLProps, HTMLAttributes, FC } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { API } from '../../api/AWS-gateway';
-import { ISetNotofication } from '../Toast';
+import { ISetNotification } from '../Toast';
 import notify from '../Toast';
 import { ISetStep } from '../../pages/login';
 import { isValidEmail } from '../../utils/validateEmail';
@@ -46,7 +46,7 @@ export const LoginForm: FC<ILoginForm> = ({ setStep }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPassHidden, hidePassword] = useState<boolean>(true);
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },

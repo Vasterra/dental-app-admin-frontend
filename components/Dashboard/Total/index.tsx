@@ -1,9 +1,19 @@
 import { Chart } from './chart2';
-import { useContext } from 'react';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import { AppContext } from '../../../context/app.context';
+import axios from "axios";
+import { IYearStats } from "../../../reducers/interfaces";
+import { API } from "../../../api/AWS-gateway";
+import { UserTypes } from "../../../reducers";
+import { ISetNotification } from '../../../components/Toast';
+import notify from "../../Toast";
+import styles from './Total.module.css';
+import cn from 'classnames';
 
 export const TotalSubs: React.FC<any> = () => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
+  const [year, setYear] = useState(2021);
+
   const {
     amountOfClosedAccounts,
     amountOfClosedSubscriptions,
@@ -11,6 +21,30 @@ export const TotalSubs: React.FC<any> = () => {
     amountOfNewAccounts,
     amountOfSubscriptions,
   } = state.userState.yearStats;
+
+  const setNotification = useCallback<ISetNotification>(
+    ({ ...notifyProps }) => {
+      notify({ ...notifyProps });
+    }, []);
+
+  const getYearlyStats = async () => {
+    try {
+      const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: '2021'});
+      dispatch({ type: UserTypes.GET_YEAR_STATS, payload: { ...data } });
+    } catch (exp) {
+      setNotification({
+        type: 'error',
+        message: 'Failed to load yearly stats!',
+        autoClose: 2,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getYearlyStats()
+  }, []);
+
+  console.log(state.userState.yearStats);
 
   return (
     <>
@@ -100,8 +134,25 @@ export const TotalSubs: React.FC<any> = () => {
               </div>
             </div>
           </div>
-          <div className='profile-block-box' style={{ padding: '60px' }}>
-            <Chart />
+          <div className={styles.chartBlock}>
+            <div className={styles.yearCounter}>
+              <span className={styles.year}>{year}</span>
+              <div className={styles.buttons}>
+                <button
+                  type='button'
+                  className={cn(styles.counterBtn, styles.counterBtnDec)}
+                  onClick={() => setYear(year - 1)}
+                > </button>
+                <button
+                  type='button'
+                  className={cn(styles.counterBtn, styles.counterBtnInc)}
+                  onClick={() => setYear(year + 1)}
+                > </button>
+              </div>
+            </div>
+            <div className={styles.chart}>
+              <Chart />
+            </div>
           </div>
         </>
       </div>

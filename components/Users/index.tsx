@@ -6,7 +6,7 @@ import { API } from '../../api/AWS-gateway';
 import { IUser } from '../../reducers/interfaces';
 import { getPeriod } from '../../utils/getDate';
 import FilterUsersForm from './FilterUsersForm/FilterUsersForm';
-import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
+import ConfirmPopup from './ConfirmPopup/ConfirmPopup';
 
 export const Users: React.FC = () => {
     const [users, setUsers] = useState([]);
@@ -64,7 +64,7 @@ export const Users: React.FC = () => {
           await axios.delete(`${API.DELETE_USER}?email=${userEmail}`);
           const usersUpdated = users.filter((user: IUser) => user.email !== userEmail);
           setUsersToRender(usersUpdated);
-          setUserEmail('');
+          closeConfirmPopup();
         } catch (e) {
           console.log(e)
         }
