@@ -46,7 +46,7 @@ export const Users: React.FC = () => {
       setNotification({
         type: 'error',
         message: `Failed to load users!`,
-        autoClose: 2,
+        autoClose: 3,
         position: 'top-right',
       });
     }
@@ -59,7 +59,7 @@ export const Users: React.FC = () => {
       setNotification({
         type: 'error',
         message: `Failed to suspend user!`,
-        autoClose: 2,
+        autoClose: 3,
         position: 'top-right',
       });
     }
@@ -174,6 +174,7 @@ export const Users: React.FC = () => {
                   users={usersToRender}
                   onSuspendUserClick={handleSuspendUserClick}
                   onDeleteUserClick={openConfirmPopup}
+                  alreadyFiltered={filtered}
               />
               <ConfirmPopup
                 onSubmit={handleDeleteUserClick}

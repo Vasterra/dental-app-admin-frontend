@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from 'react';
 import styles from './User.module.css';
 import cn from 'classnames/bind';
-import Link from "next/link";
+import { FRONTEND_URL } from '../../../api/AWS-gateway';
 
 interface UserProps {
     username: string,
@@ -64,12 +64,15 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                     Account is free
                 </span>
                 }
-
-                  <a className={cn(styles.link, styles.text, theme)}>
-                    <img className={svgColor} src="../images/user.svg"/>
-                    <span>View Profile</span>
-                  </a>
-
+                <a
+                  className={cn(styles.link, styles.text, theme)}
+                  href={`${FRONTEND_URL}/search/${props.email}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img className={svgColor} src="../images/user.svg"/>
+                  <span>View Profile</span>
+                </a>
                 <button
                     className={cn(styles.link, styles.openBtn, theme)}
                     onClick={() => { setOpened(!opened) }}
@@ -80,7 +83,6 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                     { opened &&
                     <img className={cn(styles.openBtn_img, svgColor)} src="../images/minus.svg"/>
                     }
-
                 </button>
             </section>
             <section className={cn(styles.userDetails, visibility, theme)}>

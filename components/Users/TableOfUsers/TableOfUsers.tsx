@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import styles from './TableOfUsers.module.css';
 import { User } from '../User/User';
 import { IUser } from '../../../reducers/interfaces';
@@ -7,9 +7,19 @@ interface TableOfUsersProps {
     users: IUser[],
     onSuspendUserClick: ({ email: string }) => void;
     onDeleteUserClick: ({ email: string }) => void;
+    alreadyFiltered: boolean
 }
 
 export const TableOfUsers: React.FC<TableOfUsersProps> = (props: TableOfUsersProps) => {
+  if (props.users.length === 0 && props.alreadyFiltered) {
+    return (
+      <div className={styles.noResults}>
+        <img src='../images/search.svg' alt='search'/>
+        <span className={styles.text}>No results. Please, try again</span>
+      </div>
+    )
+  }
+
   return (
     <>
       <ul className={styles.usersList}>{props.users.map((user: IUser, index) => <User
@@ -27,13 +37,6 @@ export const TableOfUsers: React.FC<TableOfUsersProps> = (props: TableOfUsersPro
         />
         )}
       </ul>
-
-      { props.users.length === 0 &&
-        <div className={styles.noResults}>
-          <img src='../images/search.svg' alt='search'/>
-          <span className={styles.text}>No results. Please, try again</span>
-        </div>
-      }
     </>
   )
 };
