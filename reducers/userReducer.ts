@@ -1,5 +1,5 @@
 import { ActionMap, Maybe } from './types';
-import {IMonthStats, IService, ISubSettings, IYearStats, IUser} from './interfaces';
+import {IMonthStats, IService, ISubSettings, IYearStats, IUser, IPremiumSettings} from './interfaces';
 
 export enum UserTypes {
   RESET = 'RESET_USER',
@@ -8,6 +8,7 @@ export enum UserTypes {
   DELETE_SERVICE = 'DELETE_SERVICE',
   SET_SERVICES = 'SET_SERVICES',
   SET_SUBSCRIBER_SETTINGS = 'SET_SUBSCRIBER_SETTINGS',
+  SET_PREMIUM_INFO_SETTINGS = 'SET_PREMIUM_INFO_SETTINGS',
   GET_MONTHLY_STATS = 'GET_MONTHLY_STATS',
   GET_YEAR_STATS = 'GET_YEAR_STATS',
   OPEN_LEFT_MENU = 'OPEN_LEFT_MENU',
@@ -23,6 +24,7 @@ export type userPayload = {
   };
   [UserTypes.SET_SERVICES]: IService[];
   [UserTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [UserTypes.SET_PREMIUM_INFO_SETTINGS]: IPremiumSettings;
   [UserTypes.GET_MONTHLY_STATS]: IMonthStats;
   [UserTypes.GET_YEAR_STATS]: IYearStats;
   [UserTypes.OPEN_LEFT_MENU]: boolean;
@@ -37,12 +39,7 @@ export type TUserReducerState = {
   };
   services: IService[];
   subscriberSettings: ISubSettings;
-  premiumInformation: {
-    terms: string;
-    setting_code: string | 'premium_settings';
-    features: string[];
-    price: number;
-  };
+  premiumInformation: IPremiumSettings;
   monthlyStats: IMonthStats;
   yearStats: IYearStats;
   isOpenLeftMenu: boolean;
@@ -74,7 +71,7 @@ export const UserInitialState: TUserReducerState = {
   premiumInformation: {
     features: [],
     price: 0,
-    setting_code: '',
+    setting_code: 'premium_settings',
     terms: '',
   },
   monthlyStats: {
@@ -116,6 +113,8 @@ export const userReducer = (
       return { ...state, services: action.payload };
     case UserTypes.SET_SUBSCRIBER_SETTINGS:
       return { ...state, subscriberSettings: { ...action.payload } };
+    case UserTypes.SET_PREMIUM_INFO_SETTINGS:
+      return { ...state, premiumInformation: { ...action.payload } };
     case UserTypes.GET_MONTHLY_STATS:
       return { ...state, monthlyStats: { ...action.payload } };
     case UserTypes.GET_YEAR_STATS:

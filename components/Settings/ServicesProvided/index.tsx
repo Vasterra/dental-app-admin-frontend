@@ -188,7 +188,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
               {serviceEditing &&
                 serviceEditingVAlue &&
                 services.map((item, idx) => (
-                  <p className='form-login-input'>
+                  <div className='form-login-input' key={idx}>
                     <input
                       type='text'
                       name={item.service_name}
@@ -197,7 +197,6 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                         onChangeService(item.service_id, e.target.value);
                       }}
                       id={item.service_id}
-                      key={idx}
                       disabled={!serviceEditing[item.service_id]}
                     />
                     {!serviceEditing[item.service_id] && (
@@ -239,7 +238,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                         </button>
                       </>
                     )}
-                  </p>
+                  </div>
                 ))}
               {/* <p className='row-content'>
                 <button

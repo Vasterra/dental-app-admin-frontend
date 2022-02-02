@@ -899,10 +899,16 @@ input[type=file]::-webkit-file-upload-button {
 .plus {
 	position: absolute;
 	left: 0;
-
 	width: 32px;
-
+  height: 32px;
 	cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+
+.plus-img {
+  width: 32px;
+  height: 32px;
 }
 
 .search-users {
@@ -1008,6 +1014,10 @@ input[type=file]::-webkit-file-upload-button {
 	border-left: none;
 	outline: none;
 	background: none;
+}
+
+.form-profile-input_premium {
+  padding-left: 40px;
 }
 
 input[type='file'] {

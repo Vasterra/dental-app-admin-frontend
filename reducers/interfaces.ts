@@ -40,6 +40,13 @@ export interface ISubSettings {
   setting_code: string
 }
 
+export interface IPremiumSettings {
+  features: string[],
+  terms: string,
+  setting_code: string,
+  price?: number
+}
+
 export interface IUser {
   website: string | null,
   subscription_id: string | null,
