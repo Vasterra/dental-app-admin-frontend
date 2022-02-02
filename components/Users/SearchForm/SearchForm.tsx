@@ -28,10 +28,11 @@ const SearchForm:React.FC<SearchFormProps> = (props: SearchFormProps) => {
 
                 validationSchema={SearchSchema}
 
-                onSubmit={ (values) => {
+                onSubmit={ (values, { resetForm }) => {
                     props.onSubmit({
                         keyword: values.keyword,
                     });
+                    resetForm();
                 }}
             >
                 {({
