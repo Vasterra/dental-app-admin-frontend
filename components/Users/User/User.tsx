@@ -56,7 +56,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
                 <span className={cn(styles.text, theme)}>{creationDate}</span>
                 { props.accountType === "premium" &&
                 <span className={cn(styles.text, theme)}>
-                    Paid Subscription Ends: {props.exp}
+                    Paid subscription ends: {props.exp}
                 </span>
                 }
                 { props.accountType === "free" &&

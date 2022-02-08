@@ -10,9 +10,14 @@ import notify from "../../Toast";
 import styles from './Total.module.css';
 import cn from 'classnames';
 
+interface IMonth {
+  period: number,
+  count: number
+}
+
 export const TotalSubs: React.FC<any> = () => {
   const { state, dispatch } = useContext(AppContext);
-  const [year, setYear] = useState(2021);
+  const [year, setYear] = useState(2022);
 
   const {
     amountOfClosedAccounts,
@@ -20,6 +25,8 @@ export const TotalSubs: React.FC<any> = () => {
     amountOfImages,
     amountOfNewAccounts,
     amountOfSubscriptions,
+    graphicOfFreeAccounts,
+    graphicOfSubscriptions
   } = state.userState.yearStats;
 
   const setNotification = useCallback<ISetNotification>(
@@ -29,7 +36,7 @@ export const TotalSubs: React.FC<any> = () => {
 
   const getYearlyStats = async () => {
     try {
-      const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: '2021'});
+      const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: year});
       dispatch({ type: UserTypes.GET_YEAR_STATS, payload: { ...data } });
     } catch (exp) {
       setNotification({
@@ -40,11 +47,25 @@ export const TotalSubs: React.FC<any> = () => {
     }
   };
 
+  const getFullYearlyStats = (arr: IMonth[]) => {
+    if (arr.length) {
+      for (let i = 0; i < 12; i += 1) {
+        const currentMonth = arr.find((item) => item.period === i + 1);
+        if (!currentMonth) {
+          arr.push({
+            period: i + 1,
+            count: 0
+          })
+        }
+      }
+      return arr.sort((a, b) => a.period - b.period);
+    }
+    return arr;
+  };
+
   useEffect(() => {
     getYearlyStats()
-  }, []);
-
-  console.log(state.userState.yearStats);
+  }, [year]);
 
   return (
     <>
@@ -151,7 +172,10 @@ export const TotalSubs: React.FC<any> = () => {
               </div>
             </div>
             <div className={styles.chart}>
-              <Chart />
+              <Chart
+                graphicOfSubscriptions={getFullYearlyStats(graphicOfSubscriptions)}
+                graphicOfFreeAccounts={getFullYearlyStats(graphicOfFreeAccounts)}
+              />
             </div>
           </div>
         </>
