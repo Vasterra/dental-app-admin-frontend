@@ -1,6 +1,6 @@
-const ADMIN_HOST = 'https://dovga4trq5.execute-api.eu-west-1.amazonaws.com';
-const PROFILE_HOST = 'https://b6eefr4a2b.execute-api.eu-west-1.amazonaws.com';
-export const FRONTEND_URL = 'https://d2752wzvedco75.cloudfront.net';
+const ADMIN_HOST = 'https://u4wzc80gte.execute-api.eu-west-1.amazonaws.com';
+const PROFILE_HOST = 'https://k61t1qfej3.execute-api.eu-west-1.amazonaws.com';
+export const FRONTEND_URL = 'https://d2j9gh60a25xcb.cloudfront.net';
 
 export const API = {
   LOGIN: `${ADMIN_HOST}/api/admin/login`,
