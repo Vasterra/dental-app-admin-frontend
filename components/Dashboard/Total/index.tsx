@@ -1,6 +1,72 @@
 import { Chart } from './chart2';
+import {useCallback, useContext, useEffect, useState} from 'react';
+import { AppContext } from '../../../context/app.context';
+import axios from "axios";
+import { IYearStats } from "../../../reducers/interfaces";
+import { API } from "../../../api/AWS-gateway";
+import { UserTypes } from "../../../reducers";
+import { ISetNotification } from '../../../components/Toast';
+import notify from "../../Toast";
+import styles from './Total.module.css';
+import cn from 'classnames';
+
+interface IMonth {
+  period: number,
+  count: number
+}
 
 export const TotalSubs: React.FC<any> = () => {
+  const { state, dispatch } = useContext(AppContext);
+  const [year, setYear] = useState(2022);
+
+  const {
+    amountOfClosedAccounts,
+    amountOfClosedSubscriptions,
+    amountOfImages,
+    amountOfNewAccounts,
+    amountOfSubscriptions,
+    graphicOfFreeAccounts,
+    graphicOfSubscriptions
+  } = state.userState.yearStats;
+
+  const setNotification = useCallback<ISetNotification>(
+    ({ ...notifyProps }) => {
+      notify({ ...notifyProps });
+    }, []);
+
+  const getYearlyStats = async () => {
+    try {
+      const { data } = await axios.post<IYearStats>(API.STAT_CUR_MONTHS, {year: year});
+      dispatch({ type: UserTypes.GET_YEAR_STATS, payload: { ...data } });
+    } catch (exp) {
+      setNotification({
+        type: 'error',
+        message: 'Failed to load yearly stats!',
+        autoClose: 2,
+      });
+    }
+  };
+
+  const getFullYearlyStats = (arr: IMonth[]) => {
+    if (arr.length) {
+      for (let i = 0; i < 12; i += 1) {
+        const currentMonth = arr.find((item) => item.period === i + 1);
+        if (!currentMonth) {
+          arr.push({
+            period: i + 1,
+            count: 0
+          })
+        }
+      }
+      return arr.sort((a, b) => a.period - b.period);
+    }
+    return arr;
+  };
+
+  useEffect(() => {
+    getYearlyStats()
+  }, [year]);
+
   return (
     <>
       <div className='profile-box-form'>
@@ -19,8 +85,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='134'
+                    value={amountOfSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -34,8 +100,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='24'
+                    value={amountOfNewAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -52,8 +118,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='12'
+                    value={amountOfClosedSubscriptions}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -67,8 +133,8 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='23'
+                    value={amountOfClosedAccounts}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
@@ -82,68 +148,35 @@ export const TotalSubs: React.FC<any> = () => {
                     type='text'
                     name=''
                     id=''
-                    value=''
-                    placeholder='1309'
+                    value={amountOfImages}
+                    onChange={() => {}}
                   />
                 </p>
               </div>
             </div>
           </div>
-          <div className='profile-block-box' style={{ padding: '60px' }}>
-            {/* <div className='stripes'>
-              <div className='total'>
-                <p>900</p>
-                <p>800</p>
-                <p>700</p>
-                <p>600</p>
-                <p>500</p>
-                <p>400</p>
-                <p>300</p>
-                <p>200</p>
-                <p>100</p>
-                <p>0</p>
-              </div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='vertical-stripe'></div>
-              <div className='years-block'>
-                <>
-                  <p className='year'>2021</p>
-                  <p className='year-arrows'>
-                    <img src='../images/arrow_left_big.svg' alt='arrow left' />
-                    <img src='../images/arrow_right_big.svg' alt='arrow left' />
-                  </p>
-                  <p className='circle-gray'></p>
-                  <p className='year-text'>Free Accounts</p>
-                  <p className='circle-gray'></p>
-                  <p className='year-text'>Subscriptions</p>
-                </>
+          <div className={styles.chartBlock}>
+            <div className={styles.yearCounter}>
+              <span className={styles.year}>{year}</span>
+              <div className={styles.buttons}>
+                <button
+                  type='button'
+                  className={cn(styles.counterBtn, styles.counterBtnDec)}
+                  onClick={() => setYear(year - 1)}
+                > </button>
+                <button
+                  type='button'
+                  className={cn(styles.counterBtn, styles.counterBtnInc)}
+                  onClick={() => setYear(year + 1)}
+                > </button>
               </div>
             </div>
-            <div className='hor-stripe'>
-              <p>January</p>
-              <p>February</p>
-              <p>March</p>
-              <p>April</p>
-              <p>May</p>
-              <p>June</p>
-              <p>July</p>
-              <p>August</p>
-              <p>September</p>
-              <p>October</p>
-              <p>November</p>
-              <p>December</p>
-            </div> */}
-            <Chart />
+            <div className={styles.chart}>
+              <Chart
+                graphicOfSubscriptions={getFullYearlyStats(graphicOfSubscriptions)}
+                graphicOfFreeAccounts={getFullYearlyStats(graphicOfFreeAccounts)}
+              />
+            </div>
           </div>
         </>
       </div>

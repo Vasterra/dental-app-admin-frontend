@@ -1,10 +1,14 @@
-import { useCallback, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import React, {useCallback, useContext, useState} from 'react';
 import { AppContext } from '../../../context/app.context';
-import { ISetNotofication } from '../../Toast';
+import { ISetNotification } from '../../Toast';
 import notify from '../../Toast';
 import { API } from '../../../api/AWS-gateway';
 import axios from 'axios';
+import { Field, Form, Formik } from 'formik';
+import styles from '../../Users/SearchForm/SearchForm.module.css';
+import * as Yup from 'yup';
+import { UserTypes } from '../../../reducers';
+import { IPremiumSettings } from '../../../reducers/interfaces';
 
 interface PremiumInfoProps {}
 
@@ -15,47 +19,62 @@ const getCurrency = (price: number) => {
   }).format(price);
 };
 
-interface ResetPassFormChild {
-  oldPassword: string;
-  newPassword: string;
-}
-
 export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
-  const { state } = useContext(AppContext);
-  const { features, price, setting_code, terms } =
-    state.userState.premiumInformation;
+  const { dispatch, state } = useContext(AppContext);
+  const { features, price, setting_code, terms } = state.userState.premiumInformation;
+  const [allFeatures, setAllFeatures] = useState(features);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ResetPassFormChild>();
-
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },
     []
   );
 
-  const handleResetPasword = async (data: ResetPassFormChild) => {
-    const { oldPassword, newPassword } = data;
-    const body = {
-      oldPassword,
-      newPassword,
-    };
+  const PremiumInfoSchema = Yup.object().shape({
+    newFeature: Yup.string()
+      .min(2, 'Min - 2 symbols')
+      .max(40, 'Max - 100 symbols')
+      .required('Enter a new premium feature'),
+  });
+
+  const handleAddFeature = ({ newFeature }) => {
+    setAllFeatures([...allFeatures, newFeature]);
+    setNotification({
+      type: 'success',
+      message: 'Successfully added new feature',
+      position: 'top-right',
+      autoClose: 3,
+    });
+  }
+
+  const handlePremiumFeaturesChange = async () => {
+    dispatch({
+      type: UserTypes.SET_PREMIUM_INFO_SETTINGS,
+      payload: {
+        features: allFeatures,
+        terms: terms,
+        setting_code: setting_code,
+        price: price
+      },
+    });
     try {
-      await axios.post(API.ACCOUNT_RESET_PASSWORD, body);
+      await axios.post<IPremiumSettings>(API.SETTINGS_PREMIUM_INFO_CHANGE, {
+        features: allFeatures,
+        terms: terms,
+        setting_code: setting_code
+      });
       setNotification({
         type: 'success',
-        message: 'Successfully changed password!',
+        message: 'Premium features successfully updated',
         position: 'top-right',
-        autoClose: 2,
+        autoClose: 3,
       });
     } catch (exp) {
       setNotification({
-        type: 'warning',
-        message: 'Error to reset password account, please try again!',
+        type: 'error',
+        message: 'Failed to update features',
+        autoClose: 3,
       });
     }
   };
@@ -65,7 +84,9 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
       <div className='profile-box-form'>
         <div className='form-info-block'>
           <div>
-            <p className='form-login-title green px20'>Premium Information</p>
+            <p className='form-login-title green px20'>
+              Premium Information
+            </p>
             <p className='form-login-subtitle gray px12 mb-6px'>
               Information for Free Users
             </p>
@@ -77,36 +98,59 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
               <p className='form-profile-label'>
                 <label className='form-profile-label'>Premium Features</label>
               </p>
+              <ul className='form-profile-list'>
+                {allFeatures.map((item, index) => (
+                  <li key={index}>
+                    <input
+                      className='form-profile-input'
+                      type='text'
+                      name='features'
+                      value={item}
+                      onChange={() => {}}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <Formik
+                initialValues={{
+                  newFeature: '',
+                }}
 
-              {features.map((item) => (
-                <p>
-                  <input
-                    className='form-profile-input'
-                    type='text'
-                    name=''
-                    id=''
-                    value={item}
-                    placeholder='Feature 2'
-                  />
-                </p>
-              ))}
+                validationSchema={PremiumInfoSchema}
 
-              <p className='add-plus'>
-                <input
-                  className='form-profile-input '
-                  type='text'
-                  name=''
-                  id=''
-                  value=''
-                  placeholder=''
-                />
-                <img
-                  className='plus'
-                  id='plus'
-                  src='../images/plus.svg'
-                  alt=''
-                />
-              </p>
+                onSubmit={ (values) => {
+                  handleAddFeature({
+                    newFeature: values.newFeature,
+                  });
+                  values.newFeature = '';
+                }}
+              >
+                {({
+                    errors,
+                    touched,
+                  }) => (
+                  <Form className='add-plus'>
+                    <Field
+                      name='newFeature'
+                      type='text'
+                      className='form-profile-input form-profile-input_premium'
+                      id='newFeature'
+                      autoComplete='off'
+                    />
+                    <button type='submit' className='plus' id='plus'>
+                      <img
+                        className='plus-img'
+                        src='../images/plus.svg'
+                        alt='plus'
+                      />
+                    </button>
+                    {errors.newFeature && touched.newFeature
+                      ? (<span className={styles.inputError}>{errors.newFeature}</span>)
+                      : <span className={styles.inputError}> </span>
+                    }
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
           <div className='profile-block-box'>
@@ -122,7 +166,8 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   type='text'
                   name='pricePremiumInfo'
                   id='pricePremiumInfo'
-                  value={price / 100}
+                  value={price! / 100}
+                  onChange={() => {}}
                 />
               </p>
             </div>
@@ -140,11 +185,17 @@ export const PremiumInfo: React.FC<PremiumInfoProps> = () => {
                   id=''
                   value={terms}
                   placeholder='Web Link'
+                  onChange={() => {}}
                 />
               </p>
             </div>
             <p className='row-content'>
-              <button className='button-green'>Save</button>
+              <button
+                className='button-green'
+                onClick={handlePremiumFeaturesChange}
+              >
+                Save
+              </button>
             </p>
           </div>
         </div>

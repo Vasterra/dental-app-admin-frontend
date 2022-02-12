@@ -9,7 +9,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +27,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: '',
     },
   },
 };
@@ -44,26 +43,26 @@ const labels = [
   'August',
   'September',
   'October',
-  'Novermber',
+  'November',
   'December',
 ];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+export const Chart = (props) => {
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Free Accounts',
+        data: props.graphicOfFreeAccounts.map(i => i.count),
+        backgroundColor: 'rgba(146, 205, 182, 0.8)',
+      },
+      {
+        label: 'Subscriptions',
+        data: props.graphicOfSubscriptions.map(i => i.count),
+        backgroundColor: 'rgba(33, 110, 98, 0.8)',
+      },
+    ],
+  };
 
-export const Chart = () => {
   return <Bar options={options} data={data} />;
 };

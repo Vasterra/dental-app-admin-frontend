@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AppContext } from '../../../context/app.context';
-import { ISetNotofication } from '../../Toast';
+import { ISetNotification } from '../../Toast';
 import notify from '../../Toast';
 import axios from 'axios';
 import { API } from '../../../api/AWS-gateway';
@@ -23,7 +23,7 @@ export const AdminDetails: React.FC<AdminDetailsProps> = () => {
     formState: { errors },
   } = useForm<ResetPassFormChild>();
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },

@@ -29,9 +29,12 @@
 		"react-image-file-resizer": "^0.4.7",
 		"react-image-gallery": "^1.2.7",
 		"react-loading-skeleton": "^3.0.1",
+		"react-select": "^5.2.2",
 		"react-simple-image-slider": "^2.3.0",
 		"react-toastify": "^8.0.3",
-		"serverless": "^2.69.1"
+		"serverless": "^2.69.1",
+		"formik": "^2.2.9",
+		"yup": "^0.32.9"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.5.0",

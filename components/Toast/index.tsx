@@ -8,7 +8,7 @@ interface IToastMessage{
   position?: ToastPosition
   autoClose?: number
 }
-export type ISetNotofication = (arg: IToastMessage) => unknown
+export type ISetNotification = (arg: IToastMessage) => unknown
 
 const ToastMessage = ({ type, message, position, autoClose }: IToastMessage) =>
 toast[type](message, {

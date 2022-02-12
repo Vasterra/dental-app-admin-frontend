@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { API } from '../../../api/AWS-gateway';
 import { AppContext } from '../../../context/app.context';
-import { Service, UserTypes } from '../../../reducers';
-import { ISetNotofication } from '../../Toast';
+import { UserTypes } from '../../../reducers';
+import { IService } from '../../../reducers/interfaces';
+import { ISetNotification } from '../../Toast';
 import notify from '../../Toast';
 
 interface ServicesProvidedProps {}
@@ -16,10 +17,10 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
   const [serviceEditing, setServiceEditing] = useState<any>();
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingVAlue, setServiceEditingValue] = useState<any>();
-  const [services, setLocalServices] = useState<Service[]>([]);
+  const [services, setLocalServices] = useState<IService[]>([]);
   const [newService, setNewService] = useState('');
 
-  const setNotification = useCallback<ISetNotofication>(
+  const setNotification = useCallback<ISetNotification>(
     ({ ...notifyProps }) => {
       notify({ ...notifyProps });
     },
@@ -47,7 +48,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
   }, [defaultServices]);
 
   const onHandleAddService = async () => {
-    const { data } = await axios.post<Service>(API.CHANGE_SERVICES, {
+    const { data } = await axios.post<IService>(API.CHANGE_SERVICES, {
       service_name: newService,
     });
     dispatch({
@@ -148,7 +149,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
           <div>
             <p className='form-login-title green px20'>Services Provided</p>
             <p className='form-login-subtitle gray px12 '>
-              Available Service Categories
+              Available IService Categories
             </p>
           </div>
         </div>
@@ -187,7 +188,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
               {serviceEditing &&
                 serviceEditingVAlue &&
                 services.map((item, idx) => (
-                  <p className='form-login-input'>
+                  <div className='form-login-input' key={idx}>
                     <input
                       type='text'
                       name={item.service_name}
@@ -196,7 +197,6 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                         onChangeService(item.service_id, e.target.value);
                       }}
                       id={item.service_id}
-                      key={idx}
                       disabled={!serviceEditing[item.service_id]}
                     />
                     {!serviceEditing[item.service_id] && (
@@ -238,7 +238,7 @@ export const ServicesProvided: React.FC<ServicesProvidedProps> = () => {
                         </button>
                       </>
                     )}
-                  </p>
+                  </div>
                 ))}
               {/* <p className='row-content'>
                 <button

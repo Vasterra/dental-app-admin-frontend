@@ -1,0 +1,48 @@
+.chartBlock {
+  align-self: stretch;
+  -webkit-flex-basis: 47%;
+  flex-basis: 47%;
+  padding: 60px;
+}
+
+.yearCounter {
+  width: 50px;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.counterBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.counterBtnInc {
+  background: url('/images/arrow_right_big.svg') no-repeat center;
+}
+
+.counterBtnDec {
+   background: url('/images/arrow_left_big.svg') no-repeat center;
+}
+
+.counterBtn:hover {
+  opacity: .8;
+}
+
+.year {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #095c5c;
+  margin-bottom: 10px;
+}

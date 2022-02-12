@@ -51,30 +51,30 @@ const LeftMenu: React.FC = () => {
             <li className={`leftmenu-list active}`}>
               <img
                 className='leftmenu-link-image'
-                src='../../images/user.svg'
+                src='../../images/dashboard.svg'
                 alt='link image'
               />
               <a className='leftmenu-link'>Dashboard</a>
             </li>
           </Link>
-          <Link href={`/admin/settings`}>
+          <Link href={`/admin/users`}>
             <li className={`leftmenu-list`}>
               <img
                 className='leftmenu-link-image'
-                src='../../images/more_vert.svg'
-                alt='link image'
-              />
-              <a className='leftmenu-link'>Settings</a>
-            </li>
-          </Link>
-          <Link href={`/admin/user`}>
-            <li className={`leftmenu-list`}>
-              <img
-                className='leftmenu-link-image'
-                src='../../images/person_black_24dp.svg'
+                src='../../images/user.svg'
                 alt='link image'
               />
               <a className='leftmenu-link'>Users</a>
+            </li>
+          </Link>
+          <Link href={`/admin/settings`}>
+            <li className={`leftmenu-list`}>
+              <img
+                  className='leftmenu-link-image'
+                  src='../../images/more_vert.svg'
+                  alt='link image'
+              />
+              <a className='leftmenu-link'>Settings</a>
             </li>
           </Link>
 
@@ -84,7 +84,7 @@ const LeftMenu: React.FC = () => {
               src='../../images/left-arrow.svg'
               alt='link image'
             />
-            <a className='leftmenu-link' href='/login' onClick={logOut}>
+            <a className='leftmenu-link bold' href='/login' onClick={logOut}>
               Logout
             </a>
           </li>
